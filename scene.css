@@ -248,21 +248,22 @@ html, body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 42%;
+    height: 48%;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 15;
     pointer-events: none;
-    padding: 0 1.5rem;
+    padding: 1rem 1.8rem;
+    overflow: hidden;
 }
 
 #second-message-text {
     color: #fff;
-    font-size: clamp(1rem, 3.5vw, 1.6rem);
+    font-size: clamp(0.85rem, 2.8vw, 1.4rem);
     text-align: center;
     line-height: 2;
-    max-width: 640px;
+    max-width: 680px;
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 1.4s ease, transform 1.4s ease;
@@ -398,7 +399,7 @@ html, body {
    RESPONSIVE
 ============================================= */
 @media (max-width: 768px) {
-    .moon-container { width:80px; height:80px; right:6%; top: 44%; }
-    #second-message { height: 40%; align-items: flex-start; padding-top: 1.2rem; }
-    #second-message-text { font-size: clamp(0.9rem, 3.2vw, 1.2rem); line-height: 1.9; }
+    .moon-container { width:80px; height:80px; right:6%; top: 50%; }
+    #second-message { height: 46%; align-items: flex-start; padding-top: 1rem; }
+    #second-message-text { font-size: clamp(0.8rem, 3vw, 1.1rem); line-height: 1.85; }
 }
