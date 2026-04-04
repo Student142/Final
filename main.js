@@ -227,6 +227,28 @@ function revealFlowers() {
 }
 
 // =============================================
+// SECOND MESSAGE — shown after all flowers bloom
+// =============================================
+function showSecondMessage() {
+    const el = document.getElementById('second-message-text');
+    const message = "Hi kim thanks for visitng again, hope na enjoy mo ini na little easter egg ko. Hope na whatever the reason is why nag visit ka utro kay okay ka lng kay gusto mo lng ini makitaan utro and if there's something wrong just message me lng okay.";
+    const words = message.split(' ');
+
+    words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'second-msg-word';
+        span.textContent = word;
+        span.style.animationDelay = `${i * 0.35}s`;
+        el.appendChild(span);
+    });
+
+    // fade in the paragraph container
+    requestAnimationFrame(() => {
+        el.classList.add('visible');
+    });
+}
+
+// =============================================
 // START EXPERIENCE ON TAP
 // =============================================
 function startExperience() {
@@ -241,6 +263,10 @@ function startExperience() {
 
     // Reveal flowers staggered
     revealFlowers();
+
+    // Show second message after all 3 flowers have bloomed
+    // Last flower starts at 4400ms; allow ~2s for its bloom animation
+    setTimeout(showSecondMessage, 6800);
 }
 
 // =============================================
@@ -252,7 +278,10 @@ window.addEventListener('DOMContentLoaded', () => {
     generateParticles();
 
     document.getElementById('message-screen').addEventListener('click', startExperience, { once: true });
-    document.getElementById('tap-hint').addEventListener('click', startExperience, { once: true });
+    document.getElementById('tap-hint').addEventListener('click', e => {
+        e.stopPropagation();
+        startExperience();
+    }, { once: true });
     document.getElementById('music-toggle').addEventListener('click', e => {
         e.stopPropagation();
         toggleMute();
