@@ -193,11 +193,10 @@ function revealFlowers() {
 // SECOND MESSAGE — shown after all flowers bloom
 // =============================================
 function showSecondMessage() {
+    const container = document.getElementById('second-message');
     const el = document.getElementById('second-message-text');
     const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke. redo ko. The moon shines bright for you to see, reach for it and touch it, there's more beneath 🌙";
     const words = message.split(' ');
-
-    // Shorter delay per word so long messages finish faster
     const delayPerWord = 0.18;
 
     words.forEach((word, i) => {
@@ -208,10 +207,9 @@ function showSecondMessage() {
         el.appendChild(span);
     });
 
-    // Wait until all words are visible before fading in container
-    const totalDelay = (words.length * delayPerWord + 0.6) * 1000;
+    // Fade in the whole overlay container
     requestAnimationFrame(() => {
-        el.classList.add('visible');
+        container.classList.add('visible');
     });
 }
 
@@ -222,16 +220,27 @@ function initMoonPhoto() {
     const moon = document.querySelector('.moon-container');
     const overlay = document.getElementById('photo-overlay');
     const closeBtn = document.getElementById('photo-close');
-    const img = document.getElementById('photo-img');
+    const canvas = document.getElementById('photo-canvas');
 
     moon.style.cursor = 'pointer';
 
-    // Load image src via JS only when opened — avoids Messenger WebView stripping base64 from HTML
-    let imgLoaded = false;
+    let drawn = false;
     moon.addEventListener('click', () => {
-        if (!imgLoaded) {
-            img.src = window.__photoSrc || '';
-            imgLoaded = true;
+        // Draw image onto canvas on first open — works in Messenger WebView
+        if (!drawn && window.__photoSrc) {
+            const img = new Image();
+            img.onload = () => {
+                // Size canvas to fit screen
+                const maxW = Math.min(window.innerWidth * 0.88, 800);
+                const maxH = window.innerHeight * 0.72;
+                const ratio = Math.min(maxW / img.width, maxH / img.height);
+                canvas.width  = img.width  * ratio;
+                canvas.height = img.height * ratio;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                drawn = true;
+            };
+            img.src = window.__photoSrc;
         }
         overlay.classList.add('visible');
     });
