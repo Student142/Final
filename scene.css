@@ -1,4 +1,4 @@
-/* scene.css — layout, message screen, stars, moon, mountains, particles, music button */
+/* scene.css */
 
 *, *::after, *::before {
     margin: 0; padding: 0; box-sizing: border-box;
@@ -49,6 +49,7 @@ html, body {
     margin: 0 0.3em;
     text-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
     animation: wordFadeIn 0.6s ease-out forwards;
+    will-change: transform, opacity;
 }
 
 @keyframes wordFadeIn {
@@ -114,6 +115,7 @@ html, body {
     border-radius: 50%;
     animation: twinkle var(--duration) ease-in-out infinite;
     animation-delay: var(--delay);
+    will-change: transform, opacity;
 }
 
 .star.bright {
@@ -133,6 +135,7 @@ html, body {
     top: 5%; right: 12%;
     width: 120px; height: 120px;
     z-index: 2;
+    cursor: pointer;
 }
 
 .moon {
@@ -199,7 +202,6 @@ html, body {
     pointer-events: none;
 }
 
-/* Flowers hidden + ALL animations paused until JS reveals them */
 .flower--1,
 .flower--2,
 .flower--3 {
@@ -213,7 +215,6 @@ html, body {
     animation-play-state: paused !important;
 }
 
-/* On reveal: make visible and let every animation run from its own delay */
 .flower--1.revealed,
 .flower--2.revealed,
 .flower--3.revealed {
@@ -228,36 +229,6 @@ html, body {
 }
 
 /* =============================================
-   PARTICLES
-============================================= */
-.particles-container {
-    position: absolute;
-    bottom: 5%; left: 50%;
-    transform: translateX(-50%);
-    width: 500px; height: 400px;
-    pointer-events: none;
-    z-index: 20;
-}
-
-.particle {
-    position: absolute;
-    border-radius: 50%;
-    animation: floatParticle var(--duration) ease-in-out infinite;
-    animation-delay: var(--delay);
-    opacity: 0;
-}
-.particle-gold  { width:4px; height:4px; background:radial-gradient(circle,#ffd700 0%,transparent 70%); box-shadow:0 0 8px rgba(255,215,0,0.8); }
-.particle-pink  { width:3px; height:3px; background:radial-gradient(circle,#ffb6c1 0%,transparent 70%); box-shadow:0 0 6px rgba(255,182,193,0.8); }
-.particle-white { width:2px; height:2px; background:radial-gradient(circle,#fff 0%,transparent 70%);    box-shadow:0 0 5px rgba(255,255,255,0.8); }
-
-@keyframes floatParticle {
-    0%  { opacity:0; transform:translateY(0) translateX(0) scale(0); }
-    10% { opacity:1; transform:translateY(-30px) translateX(var(--tx)) scale(1); }
-    90% { opacity:0.8; transform:translateY(-180px) translateX(var(--tx2)) scale(0.8); }
-    100%{ opacity:0; transform:translateY(-230px) translateX(var(--tx2)) scale(0); }
-}
-
-/* =============================================
    SECOND MESSAGE (after flower reveal)
 ============================================= */
 #second-message {
@@ -265,7 +236,6 @@ html, body {
     top: 0;
     left: 0;
     width: 100%;
-    /* sits in the upper portion, above where the flowers grow from bottom */
     height: 42%;
     display: flex;
     justify-content: center;
@@ -303,29 +273,114 @@ html, body {
     transform: translateY(14px);
     margin: 0 0.25em;
     animation: wordFadeIn 0.55s ease-out forwards;
+    will-change: transform, opacity;
 }
 
 /* =============================================
-   MUSIC TOGGLE
+   PARTICLES
 ============================================= */
-#music-toggle {
+.particles-container {
+    position: absolute;
+    bottom: 5%; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 400px;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatParticle var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+.particle-gold  { width:4px; height:4px; background:radial-gradient(circle,#ffd700 0%,transparent 70%); box-shadow:0 0 8px rgba(255,215,0,0.8); }
+.particle-pink  { width:3px; height:3px; background:radial-gradient(circle,#ffb6c1 0%,transparent 70%); box-shadow:0 0 6px rgba(255,182,193,0.8); }
+.particle-white { width:2px; height:2px; background:radial-gradient(circle,#fff 0%,transparent 70%);    box-shadow:0 0 5px rgba(255,255,255,0.8); }
+
+@keyframes floatParticle {
+    0%  { opacity:0; transform:translateY(0) translateX(0) scale(0); }
+    10% { opacity:1; transform:translateY(-30px) translateX(var(--tx)) scale(1); }
+    90% { opacity:0.8; transform:translateY(-180px) translateX(var(--tx2)) scale(0.8); }
+    100%{ opacity:0; transform:translateY(-230px) translateX(var(--tx2)) scale(0); }
+}
+
+/* =============================================
+   PHOTO OVERLAY (moon tap)
+============================================= */
+#photo-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+#photo-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#photo-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transform: scale(0.9);
+    transition: transform 0.5s ease;
+}
+
+#photo-overlay.visible #photo-frame {
+    transform: scale(1);
+}
+
+#photo-img {
+    max-width: 88vw;
+    max-height: 72vh;
+    border-radius: 16px;
+    box-shadow:
+        0 0 40px rgba(255, 182, 193, 0.4),
+        0 0 80px rgba(255, 182, 193, 0.2);
+    object-fit: cover;
+}
+
+#photo-caption {
+    color: rgba(255,255,255,0.85);
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    text-align: center;
+    text-shadow: 0 0 20px rgba(255,182,193,0.6);
+    letter-spacing: 0.05em;
+}
+
+#photo-close {
     position: fixed;
     top: 20px; right: 20px;
     width: 44px; height: 44px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.12);
     border: 1.5px solid rgba(255,255,255,0.3);
     border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    transition: all 0.3s ease;
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: background 0.2s ease;
 }
-#music-toggle:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
-#music-toggle svg  { width:22px; height:22px; fill:white; }
-#music-toggle.muted svg { opacity: 0.4; }
+
+#photo-close:hover { background: rgba(255,255,255,0.25); }
 
 /* =============================================
    RESPONSIVE
