@@ -255,6 +255,51 @@ html, body {
 }
 
 /* =============================================
+   SECOND MESSAGE (after flower reveal)
+============================================= */
+#second-message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* sits in the upper portion, above where the flowers grow from bottom */
+    height: 42%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+    pointer-events: none;
+    padding: 0 1.5rem;
+}
+
+#second-message-text {
+    color: #fff;
+    font-size: clamp(1rem, 3.5vw, 1.6rem);
+    text-align: center;
+    line-height: 2;
+    max-width: 640px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1.4s ease, transform 1.4s ease;
+    text-shadow:
+        0 0 30px rgba(255, 182, 193, 0.6),
+        0 0 60px rgba(255, 182, 193, 0.3);
+}
+
+#second-message-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.second-msg-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(14px);
+    margin: 0 0.25em;
+    animation: wordFadeIn 0.55s ease-out forwards;
+}
+
+/* =============================================
    MUSIC TOGGLE
 ============================================= */
 #music-toggle {
