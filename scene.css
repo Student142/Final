@@ -325,5 +325,7 @@ html, body {
    RESPONSIVE
 ============================================= */
 @media (max-width: 768px) {
-    .moon-container { width:80px; height:80px; right:6%; }
+    .moon-container { width:80px; height:80px; right:6%; top: 44%; }
+    #second-message { height: 40%; align-items: flex-start; padding-top: 1.2rem; }
+    #second-message-text { font-size: clamp(0.9rem, 3.2vw, 1.2rem); line-height: 1.9; }
 }
