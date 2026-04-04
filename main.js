@@ -103,7 +103,7 @@ function animateMessage() {
     setTimeout(() => {
         container.style.opacity = '1';
 
-        const message = "hi kim amo ini an surprise ko kanina if mag gana dapat may flower na magpakita";
+        const message = "hi kim napa bisita ka ahhh";
         const words = message.split(' ');
         words.forEach((word, i) => {
             const span = document.createElement('span');
