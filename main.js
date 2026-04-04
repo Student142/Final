@@ -220,28 +220,14 @@ function initMoonPhoto() {
     const moon = document.querySelector('.moon-container');
     const overlay = document.getElementById('photo-overlay');
     const closeBtn = document.getElementById('photo-close');
-    const canvas = document.getElementById('photo-canvas');
+    const img = document.getElementById('photo-img');
 
     moon.style.cursor = 'pointer';
 
-    let drawn = false;
+    // Image is hosted as a real file in the GitHub repo — works in all browsers including Messenger
+    img.src = 'photo.jpg';
+
     moon.addEventListener('click', () => {
-        // Draw image onto canvas on first open — works in Messenger WebView
-        if (!drawn && window.__photoSrc) {
-            const img = new Image();
-            img.onload = () => {
-                // Size canvas to fit screen
-                const maxW = Math.min(window.innerWidth * 0.88, 800);
-                const maxH = window.innerHeight * 0.72;
-                const ratio = Math.min(maxW / img.width, maxH / img.height);
-                canvas.width  = img.width  * ratio;
-                canvas.height = img.height * ratio;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                drawn = true;
-            };
-            img.src = window.__photoSrc;
-        }
         overlay.classList.add('visible');
     });
 
