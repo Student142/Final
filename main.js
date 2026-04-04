@@ -194,17 +194,22 @@ function revealFlowers() {
 // =============================================
 function showSecondMessage() {
     const el = document.getElementById('second-message-text');
-    const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke. redo ko. The moon shines bright for you to see, Reach for it and touch it, there’s more beneath 🌙 ";
+    const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke. redo ko. The moon shines bright for you to see, reach for it and touch it, there's more beneath 🌙";
     const words = message.split(' ');
+
+    // Shorter delay per word so long messages finish faster
+    const delayPerWord = 0.18;
 
     words.forEach((word, i) => {
         const span = document.createElement('span');
         span.className = 'second-msg-word';
         span.textContent = word;
-        span.style.animationDelay = `${i * 0.35}s`;
+        span.style.animationDelay = `${i * delayPerWord}s`;
         el.appendChild(span);
     });
 
+    // Wait until all words are visible before fading in container
+    const totalDelay = (words.length * delayPerWord + 0.6) * 1000;
     requestAnimationFrame(() => {
         el.classList.add('visible');
     });
@@ -217,11 +222,17 @@ function initMoonPhoto() {
     const moon = document.querySelector('.moon-container');
     const overlay = document.getElementById('photo-overlay');
     const closeBtn = document.getElementById('photo-close');
+    const img = document.getElementById('photo-img');
 
     moon.style.cursor = 'pointer';
-    moon.setAttribute('title', 'tap me 🌙');
 
+    // Load image src via JS only when opened — avoids Messenger WebView stripping base64 from HTML
+    let imgLoaded = false;
     moon.addEventListener('click', () => {
+        if (!imgLoaded) {
+            img.src = window.__photoSrc || '';
+            imgLoaded = true;
+        }
         overlay.classList.add('visible');
     });
 
