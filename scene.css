@@ -242,50 +242,47 @@ html, body {
 
 /* =============================================
    SECOND MESSAGE (after flower reveal)
+   — full-screen overlay so text is never clipped
 ============================================= */
 #second-message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 48%;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 15;
+    z-index: 500;
     pointer-events: none;
-    padding: 1rem 1.8rem;
-    overflow: hidden;
+    padding: 2rem 2rem 5rem;
+    background: radial-gradient(ellipse at center,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.1) 70%,
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#second-message.visible {
+    opacity: 1;
 }
 
 #second-message-text {
     color: #fff;
-    font-size: clamp(0.85rem, 2.8vw, 1.4rem);
+    font-size: clamp(0.95rem, 3vw, 1.45rem);
     text-align: center;
     line-height: 2;
-    max-width: 680px;
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 1.4s ease, transform 1.4s ease;
+    max-width: 600px;
     text-shadow:
-        0 0 30px rgba(255, 182, 193, 0.6),
-        0 0 60px rgba(255, 182, 193, 0.3);
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
-
-#second-message-text.visible {
-    opacity: 1;
-    transform: translateY(0);
+        0 0 30px rgba(255, 182, 193, 0.7),
+        0 1px 3px rgba(0,0,0,0.8);
 }
 
 .second-msg-word {
     display: inline-block;
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
     margin: 0 0.25em;
-    animation: wordFadeIn 0.55s ease-out forwards;
+    animation: wordFadeIn 0.5s ease-out forwards;
     will-change: transform, opacity;
 }
 
@@ -357,14 +354,14 @@ html, body {
     transform: scale(1);
 }
 
-#photo-img {
+#photo-canvas {
     max-width: 88vw;
     max-height: 72vh;
     border-radius: 16px;
     box-shadow:
         0 0 40px rgba(255, 182, 193, 0.4),
         0 0 80px rgba(255, 182, 193, 0.2);
-    object-fit: cover;
+    display: block;
 }
 
 #photo-caption {
@@ -399,7 +396,7 @@ html, body {
    RESPONSIVE
 ============================================= */
 @media (max-width: 768px) {
-    .moon-container { width:80px; height:80px; right:6%; top: 50%; }
-    #second-message { height: 46%; align-items: flex-start; padding-top: 1rem; }
-    #second-message-text { font-size: clamp(0.8rem, 3vw, 1.1rem); line-height: 1.85; }
+    .moon-container { width:80px; height:80px; right:6%; top: 8%; }
+    #second-message { padding: 1.2rem 1.4rem 4rem; }
+    #second-message-text { font-size: clamp(0.85rem, 3.5vw, 1.1rem); line-height: 1.9; }
 }
