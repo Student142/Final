@@ -194,7 +194,7 @@ function revealFlowers() {
 // =============================================
 function showSecondMessage() {
     const el = document.getElementById('second-message-text');
-    const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke pero ma arman mo man later an meaning sina once mag focus ka sa moon";
+    const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke. redo ko. The moon shines bright for you to see, Reach for it and touch it, there’s more beneath 🌙 ";
     const words = message.split(' ');
 
     words.forEach((word, i) => {
