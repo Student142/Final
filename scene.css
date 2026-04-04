@@ -145,6 +145,9 @@ html, body {
         0 0 100px rgba(255,248,220,0.4),
         0 0 160px rgba(255,248,220,0.2);
     animation: moonPulse 5s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .moon-crater {
@@ -284,6 +287,9 @@ html, body {
     text-shadow:
         0 0 30px rgba(255, 182, 193, 0.6),
         0 0 60px rgba(255, 182, 193, 0.3);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 #second-message-text.visible {
