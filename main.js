@@ -3,7 +3,7 @@
 // =============================================
 // WEB AUDIO — ROMANTIC MUSIC
 // =============================================
-let audioContext = null, isPlaying = false, isMuted = false;
+let audioContext = null, isPlaying = false;
 let oscillators = [], gainNodes = [], musicLoopId = null, chordIndex = 0;
 
 const notes = {
@@ -82,7 +82,7 @@ function startMusic() {
     initAudio(); isPlaying = true;
     const bassNotes = [notes.C3, notes.A3, notes.F3, notes.G3, notes.E3, notes.D3];
     function loop() {
-        if (!isPlaying || isMuted) return;
+        if (!isPlaying) return;
         const now = audioContext.currentTime;
         playBass(bassNotes[chordIndex], 3, now);
         playChord(chords[chordIndex], 3.5, now + 0.2);
@@ -93,21 +93,6 @@ function startMusic() {
     loop();
 }
 
-function toggleMute() {
-    isMuted = !isMuted;
-    const btn = document.getElementById('music-toggle');
-    const icon = document.getElementById('sound-icon');
-    if (isMuted) {
-        btn.classList.add('muted');
-        icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-        gainNodes.forEach(g => { try { g.gain.setTargetAtTime(0, audioContext.currentTime, 0.1); } catch(e){} });
-    } else {
-        btn.classList.remove('muted');
-        icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-        if (!musicLoopId) startMusic();
-    }
-}
-
 // =============================================
 // MESSAGE ANIMATION
 // =============================================
@@ -115,10 +100,7 @@ function animateMessage() {
     const container = document.getElementById('message-container');
     const tapHint   = document.getElementById('tap-hint');
 
-    const messageStartDelay = 1500; // pause before words begin
-
     setTimeout(() => {
-        // Fade in the container
         container.style.opacity = '1';
 
         const message = "hi kim amo ini an surprise ko kanina if mag gana dapat may flower na magpakita";
@@ -131,14 +113,13 @@ function animateMessage() {
             container.appendChild(span);
         });
 
-        // Show tap hint only after the last word finishes appearing
         const hintDelay = ((words.length - 1) * 0.4 + 0.8) * 1000;
         setTimeout(() => {
             tapHint.style.opacity = '1';
             tapHint.style.pointerEvents = 'auto';
         }, hintDelay);
 
-    }, messageStartDelay);
+    }, 1500);
 }
 
 // =============================================
@@ -185,8 +166,6 @@ function generateParticles() {
 
 // =============================================
 // REVEAL FLOWERS ONE BY ONE
-// The reliable approach: use visibility + force
-// animation restart by briefly toggling display.
 // =============================================
 function revealFlowers() {
     const delays = [0, 2200, 4400];
@@ -194,34 +173,18 @@ function revealFlowers() {
         setTimeout(() => {
             const flower = document.querySelector('.' + cls);
             if (!flower) return;
-
-            // Collect every animated element inside this flower
             const allEls = [flower, ...flower.querySelectorAll('*')];
-
-            // Step 1: clone animation names so we can re-apply them fresh
             allEls.forEach(el => {
                 const style = getComputedStyle(el);
                 const name = style.animationName;
                 if (name && name !== 'none') {
-                    // Remove animation entirely so the browser forgets progress
                     el.style.animationName = 'none';
                 }
             });
-
-            // Step 2: make visible
             flower.style.visibility = 'visible';
-
-            // Step 3: force reflow so the removal registers
             void flower.offsetWidth;
-
-            // Step 4: restore animations (browser restarts from delay=0)
-            allEls.forEach(el => {
-                el.style.animationName = '';
-            });
-
-            // Step 5: unpause
+            allEls.forEach(el => { el.style.animationName = ''; });
             flower.classList.add('revealed');
-
         }, delays[idx]);
     });
 }
@@ -231,7 +194,7 @@ function revealFlowers() {
 // =============================================
 function showSecondMessage() {
     const el = document.getElementById('second-message-text');
-    const message = "Hi kim thanks for visitng again, hope na enjoy mo ini na little easter egg ko. Hope na whatever the reason is why nag visit ka utro kay okay ka lng kay gusto mo lng ini makitaan utro and if there's something wrong just message me lng okay.";
+    const message = "Hi kim 👋, thanks for visiting again. Hope ma enjoy mo an little easter (moon) ko. sorry sa cringy joke pero ma arman mo man later an meaning sina once mag focus ka sa moon";
     const words = message.split(' ');
 
     words.forEach((word, i) => {
@@ -242,9 +205,33 @@ function showSecondMessage() {
         el.appendChild(span);
     });
 
-    // fade in the paragraph container
     requestAnimationFrame(() => {
         el.classList.add('visible');
+    });
+}
+
+// =============================================
+// MOON PHOTO LIGHTBOX
+// =============================================
+function initMoonPhoto() {
+    const moon = document.querySelector('.moon-container');
+    const overlay = document.getElementById('photo-overlay');
+    const closeBtn = document.getElementById('photo-close');
+
+    moon.style.cursor = 'pointer';
+    moon.setAttribute('title', 'tap me 🌙');
+
+    moon.addEventListener('click', () => {
+        overlay.classList.add('visible');
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        overlay.classList.remove('visible');
+    });
+
+    overlay.addEventListener('click', () => {
+        overlay.classList.remove('visible');
     });
 }
 
@@ -252,20 +239,10 @@ function showSecondMessage() {
 // START EXPERIENCE ON TAP
 // =============================================
 function startExperience() {
-    // Fade out message screen
     document.getElementById('message-screen').classList.add('fade-out');
-
-    // Bring in the main scene
     document.getElementById('scene').classList.add('visible');
-
-    // Start music
     startMusic();
-
-    // Reveal flowers staggered
     revealFlowers();
-
-    // Show second message after all 3 flowers have bloomed
-    // Last flower starts at 4400ms; allow ~2s for its bloom animation
     setTimeout(showSecondMessage, 6800);
 }
 
@@ -276,14 +253,11 @@ window.addEventListener('DOMContentLoaded', () => {
     animateMessage();
     generateStars();
     generateParticles();
+    initMoonPhoto();
 
     document.getElementById('message-screen').addEventListener('click', startExperience, { once: true });
     document.getElementById('tap-hint').addEventListener('click', e => {
         e.stopPropagation();
         startExperience();
     }, { once: true });
-    document.getElementById('music-toggle').addEventListener('click', e => {
-        e.stopPropagation();
-        toggleMute();
-    });
 });
