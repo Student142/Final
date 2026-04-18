@@ -74,7 +74,7 @@ function animateMessage(){
     const tapHint=document.getElementById('tap-hint');
     setTimeout(()=>{
         container.style.opacity='1';
-        const message="hi kim still a work in progress ini feel free to look and test things out muna. I added a few things pala hope you enjoy 😊";
+        const message="hi kim 👋, Still in progress pa ini but feel free to look around and enjoy the view. sana ma enjoy mo 😊";
         message.split(' ').forEach((word,i)=>{
             const span=document.createElement('span');
             span.className='message-word'; span.textContent=word;
@@ -194,7 +194,7 @@ function resetWorld(worldId){
     if(worldId==='world-night'){
         // Reset night flower animations
         ['flower--1','flower--2','flower--3'].forEach(cls=>{
-            const el=document.querySelector('#world-night .'+cls);
+            const el=document.querySelector('#night-flower-scene .'+cls);
             if(!el) return;
             const all=[el,...el.querySelectorAll('*')];
             all.forEach(e=>{ e.style.animationName='none'; });
@@ -242,7 +242,7 @@ function showWorldMessage(textElId, containerElId, message){
 function setupNightWorld(){
     // Restart night flower animations
     ['flower--1','flower--2','flower--3'].forEach(cls=>{
-        const el=document.querySelector('#world-night .'+cls);
+        const el=document.querySelector('#night-flower-scene .'+cls);
         if(!el) return;
         const all=[el,...el.querySelectorAll('*')];
         all.forEach(e=>{ e.style.animationName='none'; });
@@ -365,10 +365,10 @@ window.addEventListener('DOMContentLoaded',()=>{
     },{once:true});
 
     // Mountain taps
-    document.getElementById('mountain-1').addEventListener('click',()=>{
+    document.querySelector('#mountain-1 .mountain-light').addEventListener('click',()=>{
         travelToWorld('world-night', setupNightWorld, showNightWorldMessage);
     });
-    document.getElementById('mountain-2').addEventListener('click',()=>{
+    document.querySelector('#mountain-2 .mountain-light').addEventListener('click',()=>{
         travelToWorld('world-sunflower', setupSunflowerWorld, showSunflowerWorldMessage);
     });
 
