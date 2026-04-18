@@ -11,14 +11,18 @@
     pointer-events: none;
 }
 
-/* Override flowers.css #flower-scene-inner to sit above pond */
+/* Anchor flowers to bottom, leave space for pond */
 #flower-scene-inner {
-    min-height: 72vh !important;
-    padding-bottom: 30% !important;
+    min-height: 100vh !important;
+    padding: 0 0 20% !important;
     background-color: transparent !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    overflow: visible !important;
 }
 
-/* Scope the flowers .night overlay to not cover world sky */
+/* Hide the flowers.css night background overlay */
 #world-night .night {
     display: none;
 }
