@@ -1,0 +1,302 @@
+/* night-world.css — night flower environment + pond reflection */
+
+/* =============================================
+   NIGHT FLOWER SCENE
+============================================= */
+#night-flower-scene {
+    position:absolute;
+    bottom:0; left:0;
+    width:100%; height:100%;
+    z-index:10;
+    pointer-events:none;
+}
+
+#night-flower-inner {
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    height:100%;
+    padding-bottom:28%; /* leave room for pond */
+    perspective:1000px;
+}
+
+.flowers {
+    position:relative;
+    transform:scale(0.9);
+}
+
+/* =============================================
+   POND
+============================================= */
+#pond {
+    position:absolute;
+    bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:90%; height:28%;
+    z-index:15;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+#pond-water {
+    position:absolute;
+    bottom:0; left:0; width:100%; height:100%;
+    background:linear-gradient(to bottom,
+        rgba(20,20,60,0.6) 0%,
+        rgba(10,10,40,0.85) 60%,
+        rgba(5,5,25,0.95) 100%);
+    border-radius:50% 50% 0 0 / 20% 20% 0 0;
+    border-top:1px solid rgba(100,150,255,0.25);
+    box-shadow:inset 0 8px 30px rgba(80,120,255,0.15);
+}
+
+/* Shimmer lines on water */
+#pond-shimmer {
+    position:absolute;
+    top:0; left:0; width:100%; height:100%;
+    overflow:hidden;
+    border-radius:50% 50% 0 0 / 20% 20% 0 0;
+}
+#pond-shimmer::before,
+#pond-shimmer::after {
+    content:'';
+    position:absolute;
+    left:-50%; width:200%; height:1px;
+    background:linear-gradient(to right,transparent 0%,rgba(150,200,255,0.4) 40%,rgba(200,230,255,0.7) 50%,rgba(150,200,255,0.4) 60%,transparent 100%);
+    animation:shimmerMove 4s ease-in-out infinite;
+}
+#pond-shimmer::before { top:20%; animation-delay:0s; }
+#pond-shimmer::after  { top:45%; animation-delay:1.8s; }
+@keyframes shimmerMove {
+    0%,100%{ transform:translateX(-20%) scaleX(0.8); opacity:0.4; }
+    50%    { transform:translateX(20%)  scaleX(1.2); opacity:1; }
+}
+
+/* Flower reflection in pond */
+#pond-reflection {
+    position:absolute;
+    bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:60%; height:90%;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(100,200,255,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(150,100,255,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 60%, rgba(100,180,255,0.1) 0%, transparent 40%);
+    filter:blur(3px);
+    opacity:0;
+    animation:reflectionAppear 2s ease-out 1s forwards;
+}
+
+/* Reflected flower glows */
+#pond-reflection::before {
+    content:'';
+    position:absolute;
+    bottom:10%; left:50%;
+    transform:translateX(-50%);
+    width:80%; height:60%;
+    background:
+        radial-gradient(ellipse at 30% 80%, rgba(100,220,255,0.25) 0%, transparent 35%),
+        radial-gradient(ellipse at 70% 70%, rgba(180,120,255,0.2) 0%, transparent 30%),
+        radial-gradient(ellipse at 50% 90%, rgba(120,200,255,0.3) 0%, transparent 40%);
+    filter:blur(6px);
+    animation:reflectionWave 6s ease-in-out infinite;
+}
+
+@keyframes reflectionAppear {
+    0%  { opacity:0; }
+    100%{ opacity:1; }
+}
+@keyframes reflectionWave {
+    0%,100%{ transform:translateX(-50%) scaleX(1)   skewX(0deg); }
+    25%    { transform:translateX(-50%) scaleX(1.04) skewX(1deg); }
+    75%    { transform:translateX(-50%) scaleX(0.97) skewX(-1deg); }
+}
+
+/* Pond edge grass */
+#pond::before {
+    content:'';
+    position:absolute;
+    top:-6px; left:5%; width:90%; height:12px;
+    background:linear-gradient(to bottom,
+        #1a3a1a 0%,
+        #0d2010 100%);
+    border-radius:50%;
+    z-index:20;
+}
+
+/* =============================================
+   ORIGINAL NIGHT FLOWERS CSS (from flowers.css)
+   — included here so we don't need the old file
+============================================= */
+#night-flower-inner {
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    min-height:72vh;
+    overflow:hidden;
+    perspective:1000px;
+    padding:50px 0;
+    padding-bottom:28%;
+}
+
+.flower {
+    position:absolute;
+    bottom:10vmin;
+    transform-origin:bottom center;
+    z-index:10;
+    --fl-speed:0.8s;
+}
+.flower--1 { animation:moving-flower-1 4s linear infinite; }
+.flower--1 .flower__line { height:70vmin; animation-delay:0.3s; }
+.flower--1 .flower__line__leaf--1 { animation:blooming-leaf-right var(--fl-speed) 1.6s backwards; }
+.flower--1 .flower__line__leaf--2 { animation:blooming-leaf-right var(--fl-speed) 1.4s backwards; }
+.flower--1 .flower__line__leaf--3 { animation:blooming-leaf-left  var(--fl-speed) 1.2s backwards; }
+.flower--1 .flower__line__leaf--4 { animation:blooming-leaf-left  var(--fl-speed) 1s   backwards; }
+.flower--1 .flower__line__leaf--5 { animation:blooming-leaf-right var(--fl-speed) 0.8s backwards; }
+.flower--1 .flower__line__leaf--6 { animation:blooming-leaf-right var(--fl-speed) 0.6s backwards; }
+.flower--1 .flower__leafs { animation:blooming-leafs-1 var(--fl-speed) 1.8s backwards; }
+
+.flower--2 { left:-10vmin; animation:moving-flower-2 4s linear infinite; }
+.flower--2 .flower__line { height:60vmin; animation-delay:0.6s; }
+.flower--2 .flower__line__leaf--1 { animation:blooming-leaf-right var(--fl-speed) 1.9s backwards; }
+.flower--2 .flower__line__leaf--2 { animation:blooming-leaf-right var(--fl-speed) 1.7s backwards; }
+.flower--2 .flower__line__leaf--3 { animation:blooming-leaf-left  var(--fl-speed) 1.5s backwards; }
+.flower--2 .flower__line__leaf--4 { animation:blooming-leaf-left  var(--fl-speed) 1.3s backwards; }
+.flower--2 .flower__leafs { animation:blooming-leafs-2 var(--fl-speed) 2.1s backwards; }
+
+.flower--3 { left:10vmin; animation:moving-flower-3 4s linear infinite; }
+.flower--3 .flower__line { height:55vmin; animation-delay:0.9s; }
+.flower--3 .flower__line__leaf--1 { animation:blooming-leaf-right var(--fl-speed) 2.2s backwards; }
+.flower--3 .flower__line__leaf--2 { animation:blooming-leaf-right var(--fl-speed) 2s   backwards; }
+.flower--3 .flower__line__leaf--3 { animation:blooming-leaf-left  var(--fl-speed) 1.8s backwards; }
+.flower--3 .flower__line__leaf--4 { animation:blooming-leaf-left  var(--fl-speed) 1.6s backwards; }
+.flower--3 .flower__leafs { animation:blooming-leafs-3 var(--fl-speed) 2.4s backwards; }
+
+.flower__leafs {
+    position:relative; width:10vmin; height:10vmin;
+    transform-origin:bottom center;
+}
+.flower__leafs--1 { animation:blooming-leafs-1 var(--fl-speed) 1.8s backwards; }
+.flower__leafs--2 { animation:blooming-leafs-2 var(--fl-speed) 2.1s backwards; }
+.flower__leafs--3 { animation:blooming-leafs-3 var(--fl-speed) 2.4s backwards; }
+
+.flower__white-circle {
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:4vmin; height:4vmin;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#fff 0%,#ffe4b5 100%);
+    box-shadow:0 0 10px rgba(255,255,200,0.8);
+    z-index:10;
+}
+
+.flower__leaf {
+    position:absolute;
+    width:10vmin; height:10vmin;
+    border-radius:51% 49% 47% 53% / 44% 45% 55% 69%;
+}
+.flower__leaf--1 {
+    background:linear-gradient(to bottom left,#5f3b7e,#9c59b6);
+    transform:rotate(0deg) translate(1vmin,-1vmin);
+    transform-origin:bottom left;
+}
+.flower__leaf--2 {
+    background:linear-gradient(to bottom left,#9c59b6,#c39bd3);
+    transform:rotate(90deg) translate(1vmin,-1vmin);
+    transform-origin:bottom left;
+}
+.flower__leaf--3 {
+    background:linear-gradient(to bottom left,#c39bd3,#5f3b7e);
+    transform:rotate(180deg) translate(1vmin,-1vmin);
+    transform-origin:bottom left;
+}
+.flower__leaf--4 {
+    background:linear-gradient(to bottom left,#5f3b7e,#a569bd);
+    transform:rotate(270deg) translate(1vmin,-1vmin);
+    transform-origin:bottom left;
+}
+
+.flower__light {
+    position:absolute; border-radius:50%;
+    background:radial-gradient(circle,#fff 0%,#fffacd 60%,transparent 100%);
+    animation:light-ans 4s linear infinite;
+    left:50%; top:50%;
+}
+.flower__light--1 { width:1.2vmin; height:1.2vmin; animation-delay:0.3s; }
+.flower__light--2 { width:0.8vmin; height:0.8vmin; animation-delay:0.9s; }
+.flower__light--3 { width:1.4vmin; height:1.4vmin; animation-delay:1.5s; }
+.flower__light--4 { width:1vmin;   height:1vmin;   animation-delay:2.1s; }
+.flower__light--5 { width:0.6vmin; height:0.6vmin; animation-delay:2.7s; }
+.flower__light--6 { width:1.2vmin; height:1.2vmin; animation-delay:3.3s; }
+.flower__light--7 { width:0.9vmin; height:0.9vmin; animation-delay:3.9s; }
+.flower__light--8 { width:1.1vmin; height:1.1vmin; animation-delay:0.6s; }
+
+.flower__line {
+    position:absolute; left:50%;
+    width:1.5vmin; bottom:0;
+    background:linear-gradient(to bottom,#5a3f8a,#8e44ad,#5a3f8a);
+    transform-origin:bottom center;
+    transform:translateX(-50%);
+    animation:grow-ans 4s linear backwards;
+}
+.flower__line__leaf {
+    position:absolute; height:3vmin; width:5vmin;
+    border-radius:60% 40% 70% 30% / 40% 50% 50% 60%;
+}
+.flower__line__leaf--1,.flower__line__leaf--3,.flower__line__leaf--5 {
+    right:100%; top:20%;
+    background:linear-gradient(to bottom,#6a3fa8,#9b59b6);
+    border-radius:60% 40% 70% 30% / 40% 50% 50% 60%;
+    transform-origin:right;
+}
+.flower__line__leaf--2,.flower__line__leaf--4,.flower__line__leaf--6 {
+    left:100%; top:40%;
+    background:linear-gradient(to bottom,#9b59b6,#6a3fa8);
+    border-radius:40% 60% 30% 70% / 50% 40% 60% 50%;
+    transform-origin:left;
+}
+.flower__line__leaf--1 { top:15%; }
+.flower__line__leaf--2 { top:35%; }
+.flower__line__leaf--3 { top:50%; }
+.flower__line__leaf--4 { top:60%; }
+.flower__line__leaf--5 { top:70%; }
+.flower__line__leaf--6 { top:80%; }
+
+/* Night flower keyframes */
+@keyframes moving-flower-1 {
+    0%,100%{ transform:rotate(3deg); }
+    50%    { transform:rotate(-3deg); }
+}
+@keyframes moving-flower-2 {
+    0%,100%{ transform:rotate(-3deg); }
+    50%    { transform:rotate(3deg); }
+}
+@keyframes moving-flower-3 {
+    0%,100%{ transform:rotate(3deg); }
+    50%    { transform:rotate(-6deg); }
+}
+@keyframes blooming-leafs-1 {
+    0%{ transform:scale(0) rotate(0deg); }
+}
+@keyframes blooming-leafs-2 {
+    0%{ transform:scale(0) rotate(0deg); }
+}
+@keyframes blooming-leafs-3 {
+    0%{ transform:scale(0) rotate(0deg); }
+}
+@keyframes blooming-leaf-right {
+    0%{ transform:rotate(70deg); transform-origin:left; }
+}
+@keyframes blooming-leaf-left {
+    0%{ transform:rotate(-70deg); transform-origin:right; }
+}
+@keyframes light-ans {
+    0%  { opacity:0; transform:translate(0,0); }
+    25% { opacity:1; transform:translate(3vmin,-5vmin); }
+    50% { opacity:1; transform:translate(5vmin,-12vmin); }
+    75% { opacity:0.5; transform:translate(2vmin,-18vmin); }
+    100%{ opacity:0; transform:translate(4vmin,-24vmin); }
+}
+@keyframes grow-ans {
+    0%{ transform:translateX(-50%) scaleY(0); }
+}

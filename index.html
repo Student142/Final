@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for Kim</title>
+    <link rel="stylesheet" href="scene.css">
+    <link rel="stylesheet" href="night-world.css">
+    <link rel="stylesheet" href="sunflower.css">
+</head>
+<body>
+
+    <!-- ① FIRST MESSAGE SCREEN -->
+    <div id="message-screen">
+        <div class="message-container" id="message-container"></div>
+        <div id="tap-hint">tap anywhere to begin ✨</div>
+    </div>
+
+    <!-- ② MOUNTAIN SELECTION SCENE -->
+    <div id="scene">
+        <div class="stars-container" id="stars"></div>
+
+        <div class="moon-container">
+            <div class="moon">
+                <div class="moon-crater crater-1"></div>
+                <div class="moon-crater crater-2"></div>
+                <div class="moon-crater crater-3"></div>
+            </div>
+        </div>
+
+        <!-- Floating message above mountains -->
+        <div id="mountain-message">
+            <p id="mountain-message-text"></p>
+        </div>
+
+        <!-- Mountains with lights -->
+        <div class="mountains-container" id="mountains-container">
+
+            <!-- Mountain 1 — Night Flowers -->
+            <div class="mountain mountain-wrap mountain-wrap--1" id="mountain-1">
+                <div class="mountain-body"></div>
+                <div class="mountain-light">
+                    <span class="mountain-light__orb"></span>
+                    <span class="mountain-light__label">Night Bloom</span>
+                </div>
+            </div>
+
+            <!-- Mountain 2 — Sunflower Field -->
+            <div class="mountain mountain-wrap mountain-wrap--2" id="mountain-2">
+                <div class="mountain-body"></div>
+                <div class="mountain-light">
+                    <span class="mountain-light__orb"></span>
+                    <span class="mountain-light__label">Sunflower Field</span>
+                </div>
+            </div>
+
+            <!-- Mountain 3 — Blank -->
+            <div class="mountain mountain-wrap mountain-wrap--3" id="mountain-3">
+                <div class="mountain-body"></div>
+                <!-- no light yet -->
+            </div>
+
+            <!-- Background mountains (decorative) -->
+            <div class="mountain mountain-bg mountain-bg--1"></div>
+            <div class="mountain mountain-bg mountain-bg--2"></div>
+        </div>
+
+        <div class="particles-container" id="particles"></div>
+    </div>
+
+    <!-- ③ WORLD: NIGHT FLOWERS -->
+    <div id="world-night" class="world">
+        <div class="world-sky world-sky--night"></div>
+        <div class="stars-container" id="stars-night"></div>
+        <div class="moon-container moon-container--world">
+            <div class="moon">
+                <div class="moon-crater crater-1"></div>
+                <div class="moon-crater crater-2"></div>
+                <div class="moon-crater crater-3"></div>
+            </div>
+        </div>
+
+        <!-- World message -->
+        <div class="world-message" id="world-message-night">
+            <p class="world-message-text" id="world-msg-night-text"></p>
+        </div>
+
+        <!-- Night flower scene -->
+        <div id="night-flower-scene">
+            <div id="night-flower-inner">
+                <div class="flowers">
+                    <div class="flower flower--1">
+                        <div class="flower__leafs flower__leafs--1">
+                            <div class="flower__leaf flower__leaf--1"></div>
+                            <div class="flower__leaf flower__leaf--2"></div>
+                            <div class="flower__leaf flower__leaf--3"></div>
+                            <div class="flower__leaf flower__leaf--4"></div>
+                            <div class="flower__white-circle"></div>
+                            <div class="flower__light flower__light--1"></div>
+                            <div class="flower__light flower__light--2"></div>
+                            <div class="flower__light flower__light--3"></div>
+                            <div class="flower__light flower__light--4"></div>
+                            <div class="flower__light flower__light--5"></div>
+                            <div class="flower__light flower__light--6"></div>
+                            <div class="flower__light flower__light--7"></div>
+                            <div class="flower__light flower__light--8"></div>
+                        </div>
+                        <div class="flower__line">
+                            <div class="flower__line__leaf flower__line__leaf--1"></div>
+                            <div class="flower__line__leaf flower__line__leaf--2"></div>
+                            <div class="flower__line__leaf flower__line__leaf--3"></div>
+                            <div class="flower__line__leaf flower__line__leaf--4"></div>
+                            <div class="flower__line__leaf flower__line__leaf--5"></div>
+                            <div class="flower__line__leaf flower__line__leaf--6"></div>
+                        </div>
+                    </div>
+                    <div class="flower flower--2">
+                        <div class="flower__leafs flower__leafs--2">
+                            <div class="flower__leaf flower__leaf--1"></div>
+                            <div class="flower__leaf flower__leaf--2"></div>
+                            <div class="flower__leaf flower__leaf--3"></div>
+                            <div class="flower__leaf flower__leaf--4"></div>
+                            <div class="flower__white-circle"></div>
+                            <div class="flower__light flower__light--1"></div>
+                            <div class="flower__light flower__light--2"></div>
+                            <div class="flower__light flower__light--3"></div>
+                            <div class="flower__light flower__light--4"></div>
+                            <div class="flower__light flower__light--5"></div>
+                            <div class="flower__light flower__light--6"></div>
+                            <div class="flower__light flower__light--7"></div>
+                            <div class="flower__light flower__light--8"></div>
+                        </div>
+                        <div class="flower__line">
+                            <div class="flower__line__leaf flower__line__leaf--1"></div>
+                            <div class="flower__line__leaf flower__line__leaf--2"></div>
+                            <div class="flower__line__leaf flower__line__leaf--3"></div>
+                            <div class="flower__line__leaf flower__line__leaf--4"></div>
+                        </div>
+                    </div>
+                    <div class="flower flower--3">
+                        <div class="flower__leafs flower__leafs--3">
+                            <div class="flower__leaf flower__leaf--1"></div>
+                            <div class="flower__leaf flower__leaf--2"></div>
+                            <div class="flower__leaf flower__leaf--3"></div>
+                            <div class="flower__leaf flower__leaf--4"></div>
+                            <div class="flower__white-circle"></div>
+                            <div class="flower__light flower__light--1"></div>
+                            <div class="flower__light flower__light--2"></div>
+                            <div class="flower__light flower__light--3"></div>
+                            <div class="flower__light flower__light--4"></div>
+                            <div class="flower__light flower__light--5"></div>
+                            <div class="flower__light flower__light--6"></div>
+                            <div class="flower__light flower__light--7"></div>
+                            <div class="flower__light flower__light--8"></div>
+                        </div>
+                        <div class="flower__line">
+                            <div class="flower__line__leaf flower__line__leaf--1"></div>
+                            <div class="flower__line__leaf flower__line__leaf--2"></div>
+                            <div class="flower__line__leaf flower__line__leaf--3"></div>
+                            <div class="flower__line__leaf flower__line__leaf--4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pond reflection -->
+        <div id="pond">
+            <div id="pond-water"></div>
+            <div id="pond-reflection"></div>
+            <div id="pond-shimmer"></div>
+        </div>
+
+        <!-- Back button -->
+        <button class="back-btn" id="back-night">← Back</button>
+    </div>
+
+    <!-- ④ WORLD: SUNFLOWER FIELD -->
+    <div id="world-sunflower" class="world">
+        <div class="world-sky world-sky--sunrise"></div>
+        <div class="sunrise-glow"></div>
+        <div class="sunrise-horizon"></div>
+
+        <!-- World message -->
+        <div class="world-message" id="world-message-sunflower">
+            <p class="world-message-text" id="world-msg-sunflower-text"></p>
+        </div>
+
+        <!-- Sunflower scene -->
+        <div id="sunflower-scene">
+            <div class="ground" id="sunflower-ground">
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+                <div class="flower-container"></div>
+            </div>
+        </div>
+
+        <!-- Back button -->
+        <button class="back-btn" id="back-sunflower">← Back</button>
+    </div>
+
+    <!-- PHOTO OVERLAY (moon tap) -->
+    <div id="photo-overlay">
+        <div id="photo-frame">
+            <img id="photo-img" src="photo.jpg" alt="us" />
+            <p id="photo-caption">
+                You found me yey (˶ᵔ ᵕ ᵔ˶)<br><br>
+                I'll leave this as a reminder to always remember<br>
+                na you're not alone 🌸<br><br>
+                If things are tough you can always message me lng,<br>
+                if hindi ako ka reply dayon sorry —<br>
+                but I will always read your messages.<br><br>
+                I'm here lng if ever, okay? 💙
+            </p>
+            <a id="msg-btn" href="https://m.me/william.you.888332" target="_blank">
+                💬 Send me a message
+            </a>
+        </div>
+        <button id="photo-close">✕</button>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

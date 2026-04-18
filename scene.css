@@ -1,0 +1,420 @@
+/* scene.css — main layout, message screen, mountain selection, travel animation */
+
+*, *::after, *::before { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+    width:100%; height:100%;
+    overflow:hidden;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =============================================
+   FIRST MESSAGE SCREEN
+============================================= */
+#message-screen {
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f0f23 100%);
+    display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    z-index:1000;
+    transition:opacity 2s ease-out;
+}
+#message-screen.fade-out { opacity:0; pointer-events:none; }
+
+.message-container {
+    color:#fff;
+    font-size:clamp(1.2rem,4vw,2rem);
+    text-align:center;
+    padding:2rem 2rem 0;
+    max-width:90%;
+    line-height:2.2;
+    opacity:0;
+    transition:opacity 0.8s ease;
+}
+.message-word {
+    display:inline-block; opacity:0;
+    transform:translateY(20px);
+    margin:0 0.3em;
+    text-shadow:0 0 20px rgba(255,182,193,0.5);
+    animation:wordFadeIn 0.6s ease-out forwards;
+    will-change:transform,opacity;
+}
+@keyframes wordFadeIn {
+    0%  { opacity:0; transform:translateY(20px); filter:blur(4px); }
+    100%{ opacity:1; transform:translateY(0);    filter:blur(0); }
+}
+#tap-hint {
+    margin-top:2.5rem;
+    color:rgba(255,255,255,0.55);
+    font-size:clamp(0.75rem,2vw,1rem);
+    letter-spacing:0.08em;
+    animation:pulse 2s ease-in-out infinite;
+    cursor:pointer; user-select:none;
+    padding:0.5rem 1.2rem;
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:999px;
+    backdrop-filter:blur(4px);
+    opacity:0; pointer-events:none;
+    transition:opacity 0.8s ease;
+}
+@keyframes pulse {
+    0%,100%{ opacity:0.5; transform:scale(1); }
+    50%    { opacity:1;   transform:scale(1.04); }
+}
+
+/* =============================================
+   MOUNTAIN SELECTION SCENE
+============================================= */
+#scene {
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:linear-gradient(to bottom,#0a0a14 0%,#141428 20%,#1a1a3e 40%,#0f0820 100%);
+    opacity:0;
+    transition:opacity 2s ease-in;
+}
+#scene.visible { opacity:1; }
+
+/* Stars */
+.stars-container {
+    position:absolute; top:0; left:0;
+    width:100%; height:65%;
+    overflow:hidden; z-index:1;
+}
+.star {
+    position:absolute; background:white; border-radius:50%;
+    animation:twinkle var(--duration) ease-in-out infinite;
+    animation-delay:var(--delay);
+    will-change:transform,opacity;
+}
+.star.bright { box-shadow:0 0 10px rgba(255,255,255,0.8),0 0 20px rgba(255,255,255,0.4); }
+@keyframes twinkle {
+    0%,100%{ opacity:0.2; transform:scale(1); }
+    50%    { opacity:1;   transform:scale(1.3); }
+}
+
+/* Moon */
+.moon-container {
+    position:absolute; top:5%; right:12%;
+    width:120px; height:120px;
+    z-index:50; cursor:pointer;
+}
+.moon-container::before {
+    content:''; position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:220%; height:220%; border-radius:50%;
+    background:radial-gradient(circle,rgba(255,248,220,0.55) 0%,rgba(255,248,220,0.2) 40%,transparent 70%);
+    animation:moonGlow 5s ease-in-out infinite;
+    will-change:opacity; pointer-events:none;
+}
+@keyframes moonGlow { 0%,100%{opacity:0.7;} 50%{opacity:1;} }
+.moon {
+    width:100%; height:100%; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#fffef0 0%,#fff8dc 30%,#f5f5dc 60%,#e8e4c9 100%);
+    box-shadow:0 0 60px rgba(255,248,220,0.6),0 0 100px rgba(255,248,220,0.3);
+    will-change:transform;
+    backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    transform:translateZ(0);
+}
+.moon-crater { position:absolute; background:rgba(160,160,140,0.15); border-radius:50%; }
+.crater-1 { top:40%; left:20%; width:8%;  height:8%;  }
+.crater-2 { top:70%; left:40%; width:6%;  height:6%;  }
+.crater-3 { top:30%; left:70%; width:10%; height:10%; }
+
+/* Mountain message */
+#mountain-message {
+    position:absolute;
+    top:10%; left:0; width:100%;
+    display:flex; justify-content:center; align-items:center;
+    z-index:60; pointer-events:none;
+    padding:0 1.5rem;
+    opacity:0; transition:opacity 1s ease;
+}
+#mountain-message.visible { opacity:1; }
+#mountain-message-text {
+    color:#fff;
+    font-size:clamp(0.9rem,3vw,1.3rem);
+    text-align:center; line-height:1.9;
+    text-shadow:0 0 20px rgba(255,182,193,0.6),0 1px 3px rgba(0,0,0,0.8);
+}
+.msg-word {
+    display:inline-block; opacity:0; transform:translateY(10px);
+    margin:0 0.25em;
+    animation:wordFadeIn 0.5s ease-out forwards;
+}
+
+/* =============================================
+   MOUNTAINS
+============================================= */
+.mountains-container {
+    position:absolute; bottom:0; left:0;
+    width:100%; height:55%;
+    z-index:10; pointer-events:none;
+}
+
+/* Decorative bg mountains */
+.mountain-bg { position:absolute; bottom:0; }
+.mountain-bg--1 { left:-5%; width:50%; height:55%; background:linear-gradient(135deg,#100820,#1e1035); clip-path:polygon(50% 0%,100% 100%,0% 100%); }
+.mountain-bg--2 { right:-5%; width:55%; height:50%; background:linear-gradient(135deg,#100820,#1e1035); clip-path:polygon(60% 0%,100% 100%,0% 100%); }
+
+/* Interactive mountain wrappers */
+.mountain-wrap {
+    position:absolute; bottom:0;
+    cursor:pointer; pointer-events:auto;
+    transition:filter 0.3s ease;
+}
+.mountain-wrap:hover { filter:brightness(1.3); }
+
+.mountain-body {
+    width:100%; height:100%;
+    clip-path:polygon(50% 0%,100% 100%,0% 100%);
+}
+
+/* Mountain 1 — left */
+.mountain-wrap--1 { left:5%; width:38%; height:65%; }
+.mountain-wrap--1 .mountain-body { background:linear-gradient(135deg,#0d0618,#1a0d35); }
+
+/* Mountain 2 — center (tallest) */
+.mountain-wrap--2 { left:31%; width:38%; height:85%; }
+.mountain-wrap--2 .mountain-body { background:linear-gradient(135deg,#080415,#150a28); }
+
+/* Mountain 3 — right */
+.mountain-wrap--3 { right:5%; width:36%; height:60%; }
+.mountain-wrap--3 .mountain-body { background:linear-gradient(135deg,#0d0618,#1a0d35); }
+
+/* Mountain lights */
+.mountain-light {
+    position:absolute;
+    top:12%; left:50%;
+    transform:translateX(-50%);
+    display:flex; flex-direction:column;
+    align-items:center; gap:0.4rem;
+    z-index:20;
+}
+.mountain-light__orb {
+    display:block;
+    width:16px; height:16px;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff 0%,#ffe4a0 50%,#ffd700 100%);
+    box-shadow:0 0 12px 4px rgba(255,215,0,0.8),0 0 30px 8px rgba(255,215,0,0.4);
+    animation:orbPulse 2s ease-in-out infinite;
+}
+@keyframes orbPulse {
+    0%,100%{ box-shadow:0 0 12px 4px rgba(255,215,0,0.8),0 0 30px 8px rgba(255,215,0,0.4); transform:scale(1); }
+    50%    { box-shadow:0 0 20px 8px rgba(255,215,0,1),0 0 50px 16px rgba(255,215,0,0.6); transform:scale(1.2); }
+}
+.mountain-light__label {
+    color:rgba(255,255,255,0.9);
+    font-size:clamp(0.6rem,2vw,0.85rem);
+    text-shadow:0 0 10px rgba(255,215,0,0.8);
+    white-space:nowrap;
+    letter-spacing:0.05em;
+}
+
+/* Particles */
+.particles-container {
+    position:absolute; bottom:5%; left:50%;
+    transform:translateX(-50%);
+    width:500px; height:400px;
+    pointer-events:none; z-index:20;
+}
+.particle {
+    position:absolute; border-radius:50%;
+    animation:floatParticle var(--duration) ease-in-out infinite;
+    animation-delay:var(--delay); opacity:0;
+    will-change:transform,opacity;
+}
+.particle-gold  { width:4px; height:4px; background:radial-gradient(circle,#ffd700 0%,transparent 70%); box-shadow:0 0 8px rgba(255,215,0,0.8); }
+.particle-pink  { width:3px; height:3px; background:radial-gradient(circle,#ffb6c1 0%,transparent 70%); box-shadow:0 0 6px rgba(255,182,193,0.8); }
+.particle-white { width:2px; height:2px; background:radial-gradient(circle,#fff 0%,transparent 70%);    box-shadow:0 0 5px rgba(255,255,255,0.8); }
+@keyframes floatParticle {
+    0%  { opacity:0; transform:translateY(0) translateX(0) scale(0); }
+    10% { opacity:1; transform:translateY(-30px) translateX(var(--tx)) scale(1); }
+    90% { opacity:0.8; transform:translateY(-180px) translateX(var(--tx2)) scale(0.8); }
+    100%{ opacity:0; transform:translateY(-230px) translateX(var(--tx2)) scale(0); }
+}
+
+/* =============================================
+   TRAVEL ANIMATION — zoom into mountain
+============================================= */
+#scene.travel-out {
+    animation:travelOut 1.2s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes travelOut {
+    0%   { transform:scale(1);    opacity:1; }
+    60%  { transform:scale(4);    opacity:1; }
+    100% { transform:scale(8);    opacity:0; }
+}
+
+/* =============================================
+   WORLD CONTAINERS
+============================================= */
+.world {
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    z-index:100;
+    opacity:0; pointer-events:none;
+    transform:scale(0.15);
+    transition:opacity 0.8s ease, transform 0.8s cubic-bezier(0.2,0.8,0.4,1);
+}
+.world.entering {
+    opacity:1; pointer-events:auto;
+    transform:scale(1);
+}
+
+/* World sky backgrounds */
+.world-sky { position:absolute; top:0; left:0; width:100%; height:100%; }
+.world-sky--night {
+    background:linear-gradient(to bottom,#0a0a14 0%,#141428 20%,#1a1a3e 40%,#0f0820 100%);
+}
+.world-sky--sunrise {
+    background:linear-gradient(to bottom,
+        #0a0520 0%,
+        #1a0a3e 15%,
+        #3d1060 30%,
+        #7b2d8b 45%,
+        #c45c3a 60%,
+        #e8873a 72%,
+        #f5b942 82%,
+        #fde08a 92%,
+        #fff5c0 100%);
+}
+
+/* Sunrise glow */
+.sunrise-glow {
+    position:absolute;
+    bottom:28%; left:50%;
+    transform:translateX(-50%);
+    width:180%; height:60%;
+    background:radial-gradient(ellipse at center bottom,
+        rgba(255,180,50,0.55) 0%,
+        rgba(255,120,20,0.3) 35%,
+        transparent 70%);
+    z-index:1; pointer-events:none;
+}
+.sunrise-horizon {
+    position:absolute;
+    bottom:25%; left:0; width:100%; height:3px;
+    background:linear-gradient(to right,transparent,rgba(255,200,80,0.8),transparent);
+    z-index:2; pointer-events:none;
+    box-shadow:0 0 20px 8px rgba(255,180,50,0.4);
+}
+
+/* World message */
+.world-message {
+    position:fixed; top:0; left:0; width:100%;
+    height:auto; max-height:48%;
+    display:flex; justify-content:center; align-items:flex-start;
+    z-index:500; pointer-events:none;
+    padding:1.5rem 2rem 1rem;
+    background:linear-gradient(to bottom,rgba(5,5,20,0.82) 0%,rgba(5,5,20,0.6) 70%,transparent 100%);
+    opacity:0; transition:opacity 1s ease;
+}
+.world-message.visible { opacity:1; }
+.world-message-text {
+    color:#fff;
+    font-size:clamp(0.82rem,2.6vw,1.2rem);
+    text-align:center; line-height:1.85; max-width:560px;
+    text-shadow:0 0 24px rgba(255,182,193,0.7),0 1px 3px rgba(0,0,0,0.9);
+}
+.world-msg-word {
+    display:inline-block; opacity:0; transform:translateY(10px);
+    margin:0 0.25em;
+    animation:wordFadeIn 0.5s ease-out forwards;
+}
+
+/* Back button */
+.back-btn {
+    position:fixed; bottom:2rem; left:50%;
+    transform:translateX(-50%);
+    z-index:600;
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.35);
+    color:#fff; font-size:1rem;
+    padding:0.6rem 1.8rem;
+    border-radius:999px; cursor:pointer;
+    backdrop-filter:blur(6px);
+    transition:background 0.2s ease, transform 0.2s ease;
+    letter-spacing:0.05em;
+}
+.back-btn:hover { background:rgba(255,255,255,0.25); transform:translateX(-50%) scale(1.05); }
+
+/* Moon inside world */
+.moon-container--world {
+    position:absolute; top:5%; right:12%;
+    width:100px; height:100px;
+    z-index:50; cursor:pointer;
+}
+
+/* =============================================
+   PHOTO OVERLAY
+============================================= */
+#photo-overlay {
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.85);
+    z-index:9999;
+    display:flex; justify-content:center; align-items:center;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.5s ease;
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+#photo-overlay.visible { opacity:1; pointer-events:auto; }
+#photo-frame {
+    display:flex; flex-direction:column; align-items:center; gap:1rem;
+    max-height:92vh; overflow-y:auto;
+    padding:1rem 0.5rem 2rem;
+    transform:scale(0.9); transition:transform 0.5s ease;
+    scrollbar-width:none; -ms-overflow-style:none;
+}
+#photo-frame::-webkit-scrollbar { display:none; }
+#photo-overlay.visible #photo-frame { transform:scale(1); }
+#photo-img {
+    max-width:88vw; max-height:72vh; border-radius:16px;
+    box-shadow:0 0 40px rgba(255,182,193,0.4),0 0 80px rgba(255,182,193,0.2);
+    object-fit:cover; display:block;
+}
+#photo-caption {
+    color:rgba(255,255,255,0.85);
+    font-size:clamp(0.85rem,2.8vw,1.1rem);
+    text-align:center;
+    text-shadow:0 0 20px rgba(255,182,193,0.6);
+    letter-spacing:0.02em; line-height:1.9;
+}
+#msg-btn {
+    display:inline-block; margin-top:0.5rem;
+    padding:0.7rem 1.6rem;
+    background:linear-gradient(135deg,#0078ff,#0052cc);
+    color:#fff; font-size:clamp(0.9rem,2.8vw,1.05rem);
+    font-weight:600; text-decoration:none; border-radius:999px;
+    letter-spacing:0.03em;
+    box-shadow:0 4px 20px rgba(0,120,255,0.45);
+    transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+#msg-btn:hover,#msg-btn:active {
+    transform:scale(1.05);
+    box-shadow:0 6px 28px rgba(0,120,255,0.65);
+}
+#photo-close {
+    position:fixed; top:20px; right:20px;
+    width:44px; height:44px;
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.3);
+    border-radius:50%; color:white; font-size:1.1rem;
+    cursor:pointer; display:flex; justify-content:center; align-items:center;
+    backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+    transition:background 0.2s ease; z-index:10000;
+}
+#photo-close:hover { background:rgba(255,255,255,0.25); }
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+@media (max-width:768px) {
+    .moon-container { width:80px; height:80px; right:6%; top:8%; }
+    .moon-container--world { width:70px; height:70px; }
+    .mountain-wrap--2 { height:75%; }
+    .world-message { max-height:46%; padding:1rem 1.2rem 0.8rem; }
+    .world-message-text { font-size:clamp(0.78rem,3.2vw,1rem); line-height:1.75; }
+}
