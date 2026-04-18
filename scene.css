@@ -148,66 +148,91 @@ html, body {
    MOUNTAINS
 ============================================= */
 .mountains-container {
-    position:absolute; bottom:0; left:0;
-    width:100%; height:55%;
+    position:absolute; bottom:-2%; left:0;
+    width:100%; height:52%;
     z-index:10; pointer-events:none;
 }
 
-/* Decorative bg mountains */
+/* Decorative bg mountains — wider, flatter peaks */
 .mountain-bg { position:absolute; bottom:0; }
-.mountain-bg--1 { left:-5%; width:50%; height:55%; background:linear-gradient(135deg,#100820,#1e1035); clip-path:polygon(50% 0%,100% 100%,0% 100%); }
-.mountain-bg--2 { right:-5%; width:55%; height:50%; background:linear-gradient(135deg,#100820,#1e1035); clip-path:polygon(60% 0%,100% 100%,0% 100%); }
+.mountain-bg--1 { left:-5%; width:55%; height:45%; background:linear-gradient(135deg,#0a0518,#150a28); clip-path:polygon(42% 0%,100% 100%,0% 100%); }
+.mountain-bg--2 { right:-5%; width:50%; height:40%; background:linear-gradient(135deg,#0a0518,#150a28); clip-path:polygon(55% 0%,100% 100%,0% 100%); }
 
-/* Interactive mountain wrappers */
+/* Interactive mountain wrappers — pointer-events none, only orb is clickable */
 .mountain-wrap {
     position:absolute; bottom:0;
-    cursor:pointer; pointer-events:auto;
-    transition:filter 0.3s ease;
+    pointer-events:none;
 }
-.mountain-wrap:hover { filter:brightness(1.3); }
 
+/* Wider, flatter clip-path for softer peaks */
 .mountain-body {
     width:100%; height:100%;
-    clip-path:polygon(50% 0%,100% 100%,0% 100%);
+    clip-path:polygon(50% 8%,95% 100%,5% 100%);
 }
 
-/* Mountain 1 — left */
-.mountain-wrap--1 { left:5%; width:38%; height:65%; }
-.mountain-wrap--1 .mountain-body { background:linear-gradient(135deg,#0d0618,#1a0d35); }
+/* Mountain 1 — left, shorter */
+.mountain-wrap--1 { left:2%; width:42%; height:52%; }
+.mountain-wrap--1 .mountain-body { background:linear-gradient(160deg,#0d0a20,#1a1040); }
 
-/* Mountain 2 — center (tallest) */
-.mountain-wrap--2 { left:31%; width:38%; height:85%; }
-.mountain-wrap--2 .mountain-body { background:linear-gradient(135deg,#080415,#150a28); }
+/* Mountain 2 — center, tallest */
+.mountain-wrap--2 { left:29%; width:42%; height:70%; }
+.mountain-wrap--2 .mountain-body { background:linear-gradient(160deg,#080415,#12082a); }
 
 /* Mountain 3 — right */
-.mountain-wrap--3 { right:5%; width:36%; height:60%; }
-.mountain-wrap--3 .mountain-body { background:linear-gradient(135deg,#0d0618,#1a0d35); }
+.mountain-wrap--3 { right:2%; width:40%; height:48%; }
+.mountain-wrap--3 .mountain-body { background:linear-gradient(160deg,#0d0a20,#1a1040); }
 
-/* Mountain lights */
+/* Mountain lights — only this div is the click target */
 .mountain-light {
     position:absolute;
-    top:12%; left:50%;
+    top:14%; left:50%;
     transform:translateX(-50%);
     display:flex; flex-direction:column;
-    align-items:center; gap:0.4rem;
+    align-items:center; gap:0.5rem;
     z-index:20;
+    pointer-events:auto;
+    cursor:pointer;
+    padding:10px;
 }
+.mountain-light:hover .mountain-light__orb { transform:scale(1.3); }
+
+/* Mountain 1 orb — teal (night flower color) */
+.mountain-wrap--1 .mountain-light__orb {
+    background:radial-gradient(circle,#fff 0%,#a7ffee 40%,#39c6d6 100%);
+    box-shadow:0 0 12px 4px rgba(57,198,214,0.9),0 0 30px 8px rgba(57,198,214,0.5);
+    animation:orbPulseTeal 2s ease-in-out infinite;
+}
+@keyframes orbPulseTeal {
+    0%,100%{ box-shadow:0 0 12px 4px rgba(57,198,214,0.9),0 0 30px 8px rgba(57,198,214,0.5); transform:scale(1); }
+    50%    { box-shadow:0 0 22px 8px rgba(57,198,214,1),0 0 50px 16px rgba(57,198,214,0.7); transform:scale(1.2); }
+}
+.mountain-wrap--1 .mountain-light__label {
+    text-shadow:0 0 10px rgba(57,198,214,0.9);
+}
+
+/* Mountain 2 orb — golden orange (sunflower color) */
+.mountain-wrap--2 .mountain-light__orb {
+    background:radial-gradient(circle,#fff 0%,#ffd85f 40%,#ff6236 100%);
+    box-shadow:0 0 12px 4px rgba(255,180,50,0.9),0 0 30px 8px rgba(255,100,54,0.5);
+    animation:orbPulseGold 2s ease-in-out infinite;
+}
+@keyframes orbPulseGold {
+    0%,100%{ box-shadow:0 0 12px 4px rgba(255,180,50,0.9),0 0 30px 8px rgba(255,100,54,0.5); transform:scale(1); }
+    50%    { box-shadow:0 0 22px 8px rgba(255,200,60,1),0 0 50px 16px rgba(255,120,54,0.7); transform:scale(1.2); }
+}
+.mountain-wrap--2 .mountain-light__label {
+    text-shadow:0 0 10px rgba(255,180,50,0.9);
+}
+
 .mountain-light__orb {
     display:block;
-    width:16px; height:16px;
+    width:18px; height:18px;
     border-radius:50%;
-    background:radial-gradient(circle,#fff 0%,#ffe4a0 50%,#ffd700 100%);
-    box-shadow:0 0 12px 4px rgba(255,215,0,0.8),0 0 30px 8px rgba(255,215,0,0.4);
-    animation:orbPulse 2s ease-in-out infinite;
-}
-@keyframes orbPulse {
-    0%,100%{ box-shadow:0 0 12px 4px rgba(255,215,0,0.8),0 0 30px 8px rgba(255,215,0,0.4); transform:scale(1); }
-    50%    { box-shadow:0 0 20px 8px rgba(255,215,0,1),0 0 50px 16px rgba(255,215,0,0.6); transform:scale(1.2); }
+    transition:transform 0.2s ease;
 }
 .mountain-light__label {
-    color:rgba(255,255,255,0.9);
-    font-size:clamp(0.6rem,2vw,0.85rem);
-    text-shadow:0 0 10px rgba(255,215,0,0.8);
+    color:rgba(255,255,255,0.92);
+    font-size:clamp(0.62rem,2vw,0.88rem);
     white-space:nowrap;
     letter-spacing:0.05em;
 }
@@ -414,7 +439,7 @@ html, body {
 @media (max-width:768px) {
     .moon-container { width:80px; height:80px; right:6%; top:8%; }
     .moon-container--world { width:70px; height:70px; }
-    .mountain-wrap--2 { height:75%; }
+    .mountain-wrap--2 { height:62%; }
     .world-message { max-height:46%; padding:1rem 1.2rem 0.8rem; }
     .world-message-text { font-size:clamp(0.78rem,3.2vw,1rem); line-height:1.75; }
 }
