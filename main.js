@@ -74,7 +74,7 @@ function animateMessage(){
     const tapHint=document.getElementById('tap-hint');
     setTimeout(()=>{
         container.style.opacity='1';
-        const message="hi kim amo ini an surprise ko kanina if mag gana dapat may flower na magpakita";
+        const message="hi kim still a work in progress ini feel free to look and test things out muna. I added a few things pala hope you enjoy 😊";
         message.split(' ').forEach((word,i)=>{
             const span=document.createElement('span');
             span.className='message-word'; span.textContent=word;
