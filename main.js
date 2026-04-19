@@ -264,7 +264,7 @@ function showNightWorldMessage(){
     showWorldMessage(
         'world-msg-night-text',
         'world-message-night',
-        'Night Bloom 🌸 — flowers that glow under the moonlight, reflected in the still pond below. still in progress '
+        'hi kim wara ako didi san ma isipan na masabi sana ma enjoy mo 🌸'
     );
 }
 
@@ -329,7 +329,7 @@ function showSunflowerWorldMessage(){
     showWorldMessage(
         'world-msg-sunflower-text',
         'world-message-sunflower',
-        'Sunflower Field 🌻 — a warm sunrise field, where sunflowers bloom and sway in the breeze. still in progress'
+        "remember when you told me na don't let anyone dim my light? napa isip ako mag simo san \"sanflower\" sorry sa corny joke 🌻"
     );
 }
 
@@ -435,6 +435,6 @@ function showCatWorldMessage() {
     showWorldMessage(
         'world-msg-cat-text',
         'world-message-cat',
-        'Sleepy Cat 🐱 — a cozy night field, just for you. medyo same sa profile mo basi balyoan ko sa sunod or madagdag akon design sa iya'
+        'hi kim adi an miya, wara lng na isipan ko lng mag butang san nakitaan ko kanina an profile pic mo 🐱 sa ML'
     );
 }
