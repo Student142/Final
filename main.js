@@ -207,6 +207,12 @@ function resetWorld(worldId){
         msg.classList.remove('visible');
         txt.innerHTML='';
     }
+    if(worldId==='world-cat'){
+        const msg=document.getElementById('world-message-cat');
+        const txt=document.getElementById('world-msg-cat-text');
+        if(msg) msg.classList.remove('visible');
+        if(txt) txt.innerHTML='';
+    }
     if(worldId==='world-sunflower'){
         // Remove animate class from all flower containers
         document.querySelectorAll('#world-sunflower .flower-container').forEach(el=>{
@@ -258,7 +264,7 @@ function showNightWorldMessage(){
     showWorldMessage(
         'world-msg-night-text',
         'world-message-night',
-        'Night Bloom 🌸 — flowers that glow under the moonlight, reflected in the still pond below'
+        'Night Bloom 🌸 — flowers that glow under the moonlight, reflected in the still pond below. still in progress '
     );
 }
 
@@ -323,7 +329,7 @@ function showSunflowerWorldMessage(){
     showWorldMessage(
         'world-msg-sunflower-text',
         'world-message-sunflower',
-        'Sunflower Field 🌻 — a warm sunrise field, where sunflowers bloom and sway in the breeze'
+        'Sunflower Field 🌻 — a warm sunrise field, where sunflowers bloom and sway in the breeze. still in progress'
     );
 }
 
@@ -369,13 +375,66 @@ window.addEventListener('DOMContentLoaded',()=>{
         travelToWorld('world-night', setupNightWorld, showNightWorldMessage);
     });
     document.querySelector('#mountain-2 .mountain-light').addEventListener('click',()=>{
+        travelToWorld('world-cat', setupCatWorld, showCatWorldMessage);
+    });
+    document.querySelector('#mountain-3 .mountain-light').addEventListener('click',()=>{
         travelToWorld('world-sunflower', setupSunflowerWorld, showSunflowerWorldMessage);
     });
 
     // Back buttons
     document.getElementById('back-night').addEventListener('click',exitWorld);
+    document.getElementById('back-cat').addEventListener('click',()=>{
+        document.getElementById('cat-caption').classList.remove('visible');
+        exitWorld();
+    });
     document.getElementById('back-sunflower').addEventListener('click',exitWorld);
 
     // Moon photo
     initMoonPhoto();
 });
+
+// =============================================
+// WORLD: CAT (mountain 2)
+// =============================================
+function generateFireflies() {
+    const container = document.getElementById('cat-fireflies');
+    if (!container || container.children.length > 0) return;
+    for (let i = 0; i < 18; i++) {
+        const ff = document.createElement('div');
+        ff.className = 'firefly';
+        const x = 5 + Math.random() * 90;
+        const y = 20 + Math.random() * 55;
+        const dur = (3 + Math.random() * 4).toFixed(1);
+        const delay = (-Math.random() * 5).toFixed(1);
+        const rx = () => ((Math.random() - 0.5) * 60).toFixed(0) + 'px';
+        const ry = () => ((Math.random() - 0.5) * 40).toFixed(0) + 'px';
+        ff.style.cssText = `left:${x}%;top:${y}%;--ff-dur:${dur}s;--ff-delay:${delay}s;--fx1:${rx()};--fy1:${ry()};--fx2:${rx()};--fy2:${ry()};--fx3:${rx()};--fy3:${ry()};--fx4:${rx()};--fy4:${ry()};`;
+        container.appendChild(ff);
+    }
+}
+
+function setupCatWorld() {
+    generateFireflies();
+    if (document.getElementById('stars-cat').children.length === 0) {
+        generateStars('stars-cat');
+    }
+    // Scale cat container to fit screen width
+    const container = document.querySelector('#world-cat .container');
+    if (container) {
+        const scale = Math.min(1, (window.innerWidth * 0.88) / 350);
+        container.style.transform = `scale(${scale})`;
+        const wrap = document.querySelector('#world-cat .cat-wrap');
+        if (wrap) wrap.style.height = (200 * scale) + 'px';
+    }
+    setTimeout(() => {
+        document.getElementById('cat-caption').classList.add('visible');
+    }, 1500);
+}
+
+function showCatWorldMessage() {
+    showWorldMessage(
+        'world-msg-cat-text',
+        'world-message-cat',
+        'Sleepy Cat 🐱 — a cozy night field, just for you. medyo same sa profile mo basi balyoan ko sa sunod or madagdag akon design sa iya'
+    );
+}
