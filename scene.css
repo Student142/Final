@@ -196,7 +196,7 @@ html, body {
 }
 .mountain-light:hover .mountain-light__orb { transform:scale(1.3); }
 
-/* Mountain 1 orb — teal (night flower color) */
+/* Mountain 1 orb — teal/cyan (night flower color) */
 .mountain-wrap--1 .mountain-light__orb {
     background:radial-gradient(circle,#fff 0%,#a7ffee 40%,#39c6d6 100%);
     box-shadow:0 0 12px 4px rgba(57,198,214,0.9),0 0 30px 8px rgba(57,198,214,0.5);
@@ -210,18 +210,38 @@ html, body {
     text-shadow:0 0 10px rgba(57,198,214,0.9);
 }
 
-/* Mountain 2 orb — golden orange (sunflower color) */
+/* Mountain 2 orb — soft green (firefly/cat world color) */
 .mountain-wrap--2 .mountain-light__orb {
+    background:radial-gradient(circle,#fff 0%,#aaff80 40%,#55cc30 100%);
+    box-shadow:0 0 12px 4px rgba(140,255,80,0.9),0 0 30px 8px rgba(100,220,50,0.5);
+    animation:orbPulseGreen 2s ease-in-out infinite;
+}
+@keyframes orbPulseGreen {
+    0%,100%{ box-shadow:0 0 12px 4px rgba(140,255,80,0.9),0 0 30px 8px rgba(100,220,50,0.5); transform:scale(1); }
+    50%    { box-shadow:0 0 22px 8px rgba(160,255,100,1),0 0 50px 16px rgba(120,240,60,0.7); transform:scale(1.2); }
+}
+.mountain-wrap--2 .mountain-light__label {
+    text-shadow:0 0 10px rgba(140,255,80,0.9);
+}
+
+/* Mountain 3 orb — golden orange (sunflower color), near base */
+.mountain-wrap--3 .mountain-light__orb {
     background:radial-gradient(circle,#fff 0%,#ffd85f 40%,#ff6236 100%);
     box-shadow:0 0 12px 4px rgba(255,180,50,0.9),0 0 30px 8px rgba(255,100,54,0.5);
-    animation:orbPulseGold 2s ease-in-out infinite;
+    animation:orbPulseGold 2.4s ease-in-out infinite;
 }
 @keyframes orbPulseGold {
     0%,100%{ box-shadow:0 0 12px 4px rgba(255,180,50,0.9),0 0 30px 8px rgba(255,100,54,0.5); transform:scale(1); }
     50%    { box-shadow:0 0 22px 8px rgba(255,200,60,1),0 0 50px 16px rgba(255,120,54,0.7); transform:scale(1.2); }
 }
-.mountain-wrap--2 .mountain-light__label {
+.mountain-wrap--3 .mountain-light__label {
     text-shadow:0 0 10px rgba(255,180,50,0.9);
+}
+
+/* Move mountain 3 light near the base */
+.mountain-light--base {
+    top: auto !important;
+    bottom: 8% !important;
 }
 
 .mountain-light__orb {
