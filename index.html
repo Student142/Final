@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise for Kim</title>
+    <title>Sana ma enjoy mo kim</title>
     <link rel="stylesheet" href="scene.css">
     <link rel="stylesheet" href="flowers.css">
     <link rel="stylesheet" href="night-world.css">
+    <link rel="stylesheet" href="cat-world.css">
     <link rel="stylesheet" href="sunflower.css">
 </head>
 <body>
@@ -46,19 +47,22 @@
                 </div>
             </div>
 
-            <!-- Mountain 2 — Sunflower Field -->
+            <!-- Mountain 2 — Still in progress -->
             <div class="mountain mountain-wrap mountain-wrap--2" id="mountain-2">
                 <div class="mountain-body"></div>
                 <div class="mountain-light">
                     <span class="mountain-light__orb"></span>
-                    <span class="mountain-light__label">Sunflower Field</span>
+                    <span class="mountain-light__label">Sleepy Cat</span>
                 </div>
             </div>
 
-            <!-- Mountain 3 — Blank -->
+            <!-- Mountain 3 — Sunflower Field (light near base) -->
             <div class="mountain mountain-wrap mountain-wrap--3" id="mountain-3">
                 <div class="mountain-body"></div>
-                <!-- no light yet -->
+                <div class="mountain-light mountain-light--base">
+                    <span class="mountain-light__orb"></span>
+                    <span class="mountain-light__label">Sunflower Field</span>
+                </div>
             </div>
 
             <!-- Background mountains (decorative) -->
@@ -296,7 +300,55 @@
         <button class="back-btn" id="back-night">← Back</button>
     </div>
 
-    <!-- ④ WORLD: SUNFLOWER FIELD -->
+    <!-- ④ WORLD: SLEEPY CAT -->
+    <div id="world-cat" class="world">
+        <div class="world-sky world-sky--night-cat"></div>
+        <div class="stars-container" id="stars-cat"></div>
+
+        <!-- Moon in cat world -->
+        <div class="moon-container moon-container--world">
+            <div class="moon">
+                <div class="moon-crater crater-1"></div>
+                <div class="moon-crater crater-2"></div>
+                <div class="moon-crater crater-3"></div>
+            </div>
+        </div>
+
+        <!-- World message -->
+        <div class="world-message" id="world-message-cat">
+            <p class="world-message-text" id="world-msg-cat-text"></p>
+        </div>
+
+        <!-- Cat caption -->
+        <div id="cat-caption">inspired by your new profile picture in ML<br>hope magustohan mo kim </div>
+
+        <!-- Fireflies injected by JS -->
+        <div id="cat-fireflies"></div>
+
+        <!-- Cat -->
+        <div class="cat-wrap">
+            <div class="container">
+                <div class="shadow"></div>
+                <div class="cat">
+                    <div class="ear"></div>
+                    <div class="eye"></div>
+                    <div class="mouth"></div>
+                    <div class="nose"></div>
+                    <div class="tail"></div>
+                    <div class="body"></div>
+                    <div class="bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field -->
+        <div class="cat-field"></div>
+
+        <!-- Back button -->
+        <button class="back-btn" id="back-cat">← Back</button>
+    </div>
+
+    <!-- ⑤ WORLD: SUNFLOWER FIELD -->
     <div id="world-sunflower" class="world">
         <div class="world-sky world-sky--sunrise"></div>
         <div class="sunrise-glow"></div>
