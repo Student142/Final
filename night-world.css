@@ -28,102 +28,114 @@
 }
 
 /* =============================================
-   POND
+   POND — SVG turbulence water reflection
 ============================================= */
+
+/* Hidden SVG filter definition */
+#pond-svg-filter {
+    position: absolute;
+    width: 0; height: 0;
+    pointer-events: none;
+}
+
 #pond {
     position: absolute;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 92%; height: 26%;
+    bottom: 0; left: 0;
+    width: 100%; height: 28%;
     z-index: 15;
     pointer-events: none;
     overflow: hidden;
 }
 
+/* Water base */
 #pond-water {
     position: absolute;
-    bottom: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom,
-        rgba(20,20,60,0.55) 0%,
-        rgba(10,10,40,0.82) 60%,
-        rgba(5,5,25,0.95) 100%);
-    border-radius: 50% 50% 0 0 / 20% 20% 0 0;
-    border-top: 1px solid rgba(100,150,255,0.2);
-    box-shadow: inset 0 8px 30px rgba(80,120,255,0.12);
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg,
+        #0a1428 0%,
+        #0d1a35 30%,
+        #091020 70%,
+        #050a15 100%);
 }
 
-/* Shimmer lines */
-#pond-shimmer {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    overflow: hidden;
-    border-radius: 50% 50% 0 0 / 20% 20% 0 0;
-}
-#pond-shimmer::before,
-#pond-shimmer::after {
-    content: '';
-    position: absolute;
-    left: -50%; width: 200%; height: 1px;
-    background: linear-gradient(to right,
-        transparent 0%,
-        rgba(150,200,255,0.35) 40%,
-        rgba(200,230,255,0.65) 50%,
-        rgba(150,200,255,0.35) 60%,
-        transparent 100%);
-    animation: shimmerMove 4s ease-in-out infinite;
-}
-#pond-shimmer::before { top: 20%; animation-delay: 0s; }
-#pond-shimmer::after  { top: 50%; animation-delay: 2s; }
-
-@keyframes shimmerMove {
-    0%,100%{ transform: translateX(-20%) scaleX(0.8); opacity: 0.4; }
-    50%    { transform: translateX(20%)  scaleX(1.2); opacity: 1; }
-}
-
-/* Reflection glow */
+/* Reflection layer — flipped, blurred, turbulence distorted */
 #pond-reflection {
     position: absolute;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 65%; height: 85%;
-    background:
-        radial-gradient(ellipse at 30% 30%, rgba(100,220,255,0.18) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 40%, rgba(160,100,255,0.14) 0%, transparent 45%),
-        radial-gradient(ellipse at 50% 70%, rgba(100,200,255,0.12) 0%, transparent 40%);
-    filter: blur(4px);
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
     opacity: 0;
-    animation: reflectionAppear 2s ease-out 1.5s forwards;
+    animation: pondAppear 2s ease-out 1s forwards;
+    /* SVG turbulence distortion applied inline via filter */
+    filter: url(#pond-turbulence) blur(1.5px);
 }
+
+/* Teal flower glow reflected in water */
 #pond-reflection::before {
     content: '';
     position: absolute;
-    bottom: 5%; left: 50%;
+    top: 0; left: 50%;
     transform: translateX(-50%);
-    width: 80%; height: 55%;
+    width: 60%; height: 80%;
     background:
-        radial-gradient(ellipse at 30% 80%, rgba(100,220,255,0.22) 0%, transparent 35%),
-        radial-gradient(ellipse at 70% 65%, rgba(180,120,255,0.18) 0%, transparent 30%),
-        radial-gradient(ellipse at 50% 90%, rgba(120,200,255,0.28) 0%, transparent 40%);
-    filter: blur(5px);
-    animation: reflectionWave 6s ease-in-out infinite;
+        radial-gradient(ellipse at 30% 20%, rgba(57,198,214,0.35) 0%, transparent 45%),
+        radial-gradient(ellipse at 70% 15%, rgba(100,240,255,0.25) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 35%, rgba(57,198,214,0.20) 0%, transparent 50%);
 }
 
-@keyframes reflectionAppear {
+/* Moon reflection streak */
+#pond-reflection::after {
+    content: '';
+    position: absolute;
+    top: 5%; left: 55%;
+    width: 6%; height: 40%;
+    background: linear-gradient(to bottom,
+        rgba(255,248,220,0.6) 0%,
+        rgba(255,248,220,0.2) 50%,
+        transparent 100%);
+    border-radius: 50%;
+    filter: blur(3px);
+}
+
+/* Animated water surface ripple lines */
+#pond-ripples {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+}
+#pond-ripples span {
+    position: absolute;
+    left: 0; width: 100%; height: 1px;
+    background: linear-gradient(to right,
+        transparent 0%,
+        rgba(100,180,255,0.25) 20%,
+        rgba(180,230,255,0.5) 50%,
+        rgba(100,180,255,0.25) 80%,
+        transparent 100%);
+    animation: pondRipple var(--rp-dur) ease-in-out infinite var(--rp-delay);
+}
+
+/* Grassy pond edge */
+#pond-edge {
+    position: absolute;
+    top: -6px; left: 0; width: 100%; height: 12px;
+    z-index: 5;
+    background: repeating-linear-gradient(
+        90deg,
+        #1a4020 0, #1a4020 3px,
+        #0d2a14 3px, #0d2a14 8px,
+        #1a4020 8px, #1a4020 13px,
+        #0f3018 13px, #0f3018 18px
+    );
+    border-radius: 3px 3px 0 0;
+}
+
+@keyframes pondAppear {
     0%  { opacity: 0; }
     100%{ opacity: 1; }
 }
-@keyframes reflectionWave {
-    0%,100%{ transform: translateX(-50%) scaleX(1)    skewX(0deg); }
-    25%    { transform: translateX(-50%) scaleX(1.04) skewX(1deg); }
-    75%    { transform: translateX(-50%) scaleX(0.97) skewX(-1deg); }
-}
-
-/* Pond grassy edge */
-#pond::before {
-    content: '';
-    position: absolute;
-    top: -5px; left: 5%; width: 90%; height: 10px;
-    background: linear-gradient(to bottom, #1a3a1a 0%, #0d2010 100%);
-    border-radius: 50%;
-    z-index: 20;
+@keyframes pondRipple {
+    0%,100% { transform: translateX(-8%) scaleX(0.85); opacity: 0.3; }
+    50%     { transform: translateX(8%)  scaleX(1.15); opacity: 0.7; }
 }
