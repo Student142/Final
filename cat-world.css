@@ -1,0 +1,247 @@
+/* cat-world.css — sleepy cat in a night field with fireflies */
+
+/* =============================================
+   WORLD SKY — deep night blue
+============================================= */
+#world-cat .world-sky--night-cat {
+    background: linear-gradient(to bottom,
+        #060d1f 0%,
+        #0d1a3a 35%,
+        #1a2a4a 65%,
+        #0f1520 100%);
+}
+
+/* =============================================
+   FIELD GROUND
+============================================= */
+#world-cat .cat-field {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 28%;
+    background: linear-gradient(to bottom,
+        #0d2010 0%,
+        #091508 50%,
+        #050e05 100%);
+    z-index: 5;
+}
+
+/* Grass edge at top of field */
+#world-cat .cat-field::before {
+    content: '';
+    position: absolute;
+    top: -8px; left: 0; width: 100%; height: 16px;
+    background: repeating-linear-gradient(
+        90deg,
+        #1a4020 0px, #1a4020 4px,
+        #0d2a14 4px, #0d2a14 8px,
+        #1a4020 8px, #1a4020 14px,
+        transparent 14px, transparent 20px
+    );
+    border-radius: 4px 4px 0 0;
+}
+
+/* =============================================
+   CAT CONTAINER — centered on field
+============================================= */
+#world-cat .cat-wrap {
+    position: absolute;
+    bottom: 26%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    width: min(340px, 88vw);
+}
+
+#world-cat .container {
+    height: 200px;
+    width: 350px;
+    position: relative;
+    transform-origin: top left;
+    /* JS will set the scale dynamically */
+}
+
+/* =============================================
+   CAT CSS — original styles
+============================================= */
+#world-cat .cat {
+    background-color: #f19b1a;
+    height: 65px;
+    width: 80px;
+    border-radius: 0 80px 80px 0;
+    position: absolute;
+    bottom: 60px;
+    right: 50px;
+}
+#world-cat .ear {
+    height: 15px;
+    width: 15px;
+    background-color: #f19b1a;
+    position: absolute;
+    bottom: 64px;
+    left: 8px;
+    border-radius: 20px 0 0 0;
+    box-shadow: 25px 0 #f19b1a;
+}
+#world-cat .eye,
+#world-cat .eye::before {
+    height: 7px;
+    width: 10px;
+    border: 2px solid #2c2c2c;
+    position: absolute;
+    border-radius: 0 0 15px 15px;
+    border-top: none;
+}
+#world-cat .eye {
+    top: 18px;
+    left: 15px;
+}
+#world-cat .eye::before {
+    content: "";
+    left: 30px;
+}
+#world-cat .nose {
+    background-color: #fff;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 32px;
+    left: 25px;
+    box-shadow: 12px 0 #fff;
+}
+#world-cat .nose::before {
+    content: "";
+    width: 12px;
+    height: 8px;
+    position: absolute;
+    background-color: #fff;
+    left: 6px;
+}
+#world-cat .nose::after {
+    content: "";
+    position: absolute;
+    height: 0; width: 0;
+    border-top: 8px solid #ef926b;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    bottom: 7px;
+    left: 6px;
+}
+#world-cat .mouth {
+    background-color: #2c2c2c;
+    height: 15px;
+    width: 17px;
+    position: absolute;
+    border-radius: 0 0 5px 5px;
+    top: 38px;
+    left: 27px;
+    animation: cat-mouth 2s infinite;
+    transform-origin: top;
+}
+@keyframes cat-mouth {
+    50% { transform: scaleY(0.7); }
+}
+#world-cat .body {
+    background-color: #f19b1a;
+    height: 90px;
+    width: 140px;
+    position: absolute;
+    right: 65px;
+    bottom: 0;
+    border-radius: 60px 60px 0 0;
+    animation: cat-sleep 2s infinite;
+    transform-origin: bottom right;
+}
+@keyframes cat-sleep {
+    50% { transform: scale(0.9, 1.05); }
+}
+#world-cat .tail {
+    background-color: #d07219;
+    height: 20px;
+    width: 100px;
+    position: absolute;
+    right: 150px;
+    bottom: 0;
+    border-radius: 20px 0 0 20px;
+}
+#world-cat .body::before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    height: 12px;
+    width: 30px;
+    border-radius: 6px;
+    bottom: 0;
+    left: 22px;
+    box-shadow: 45px 0 #fff;
+}
+#world-cat .bubble {
+    height: 20px;
+    width: 20px;
+    background-color: rgba(255,255,255,0.4);
+    position: absolute;
+    left: 65px;
+    top: 20px;
+    border-radius: 50px 50px 50px 5px;
+    animation: cat-bubble 2s infinite;
+}
+@keyframes cat-bubble {
+    50% { transform: scale(1.6); }
+}
+#world-cat .shadow {
+    height: 10px;
+    width: 240px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 52px;
+    left: 70px;
+    animation: cat-shadow 2s infinite;
+}
+@keyframes cat-shadow {
+    50% { transform: scaleX(0.7); }
+}
+
+/* =============================================
+   FIREFLIES
+============================================= */
+.firefly {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #aaff80;
+    box-shadow: 0 0 6px 2px rgba(140,255,80,0.8);
+    animation: fireflyFloat var(--ff-dur) ease-in-out infinite var(--ff-delay);
+    z-index: 15;
+    pointer-events: none;
+}
+@keyframes fireflyFloat {
+    0%   { opacity:0; transform:translate(0,0) scale(0.6); }
+    20%  { opacity:1; transform:translate(var(--fx1),var(--fy1)) scale(1); }
+    50%  { opacity:0.8; transform:translate(var(--fx2),var(--fy2)) scale(1.2); }
+    80%  { opacity:1; transform:translate(var(--fx3),var(--fy3)) scale(0.9); }
+    100% { opacity:0; transform:translate(var(--fx4),var(--fy4)) scale(0.6); }
+}
+
+/* =============================================
+   CAPTION above cat
+============================================= */
+#cat-caption {
+    position: absolute;
+    bottom: 56%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.85);
+    font-size: clamp(0.72rem, 2.5vw, 0.95rem);
+    text-align: center;
+    max-width: 80%;
+    text-shadow: 0 0 16px rgba(170,255,128,0.5), 0 1px 3px rgba(0,0,0,0.9);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    z-index: 25;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+#cat-caption.visible { opacity: 1; }
