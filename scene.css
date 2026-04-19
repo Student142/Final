@@ -314,7 +314,7 @@ html, body {
     background:linear-gradient(to bottom,#0a0a14 0%,#141428 20%,#1a1a3e 40%,#0f0820 100%);
 }
 .world-sky--sunrise {
-    background:linear-gradient(to bottom,
+    background: linear-gradient(to bottom,
         #0a0520 0%,
         #1a0a3e 15%,
         #3d1060 30%,
@@ -324,6 +324,26 @@ html, body {
         #f5b942 82%,
         #fde08a 92%,
         #fff5c0 100%);
+    animation: sunriseShift 8s ease-in-out forwards;
+}
+@keyframes sunriseShift {
+    0% {
+        background: linear-gradient(to bottom,
+            #020208 0%, #060415 15%, #0d082a 30%,
+            #1a0d3a 50%, #2a1040 70%, #1a0820 100%);
+    }
+    40% {
+        background: linear-gradient(to bottom,
+            #050315 0%, #100830 15%, #2a1050 30%,
+            #5a1a60 50%, #a03040 65%, #c05030 80%,
+            #e08020 92%, #f5c060 100%);
+    }
+    100% {
+        background: linear-gradient(to bottom,
+            #0a0520 0%, #1a0a3e 15%, #3d1060 30%,
+            #7b2d8b 45%, #c45c3a 60%, #e8873a 72%,
+            #f5b942 82%, #fde08a 92%, #fff5c0 100%);
+    }
 }
 
 /* Sunrise glow */
@@ -337,6 +357,11 @@ html, body {
         rgba(255,120,20,0.3) 35%,
         transparent 70%);
     z-index:1; pointer-events:none;
+    animation: glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse {
+    0%,100% { opacity: 0.8; }
+    50%     { opacity: 1.0; transform: translateX(-50%) scaleX(1.06); }
 }
 .sunrise-horizon {
     position:absolute;
@@ -344,6 +369,11 @@ html, body {
     background:linear-gradient(to right,transparent,rgba(255,200,80,0.8),transparent);
     z-index:2; pointer-events:none;
     box-shadow:0 0 20px 8px rgba(255,180,50,0.4);
+    animation: horizonGlow 4s ease-in-out infinite;
+}
+@keyframes horizonGlow {
+    0%,100% { box-shadow: 0 0 20px 8px rgba(255,180,50,0.4); }
+    50%     { box-shadow: 0 0 35px 14px rgba(255,200,80,0.7); }
 }
 
 /* World message */
