@@ -264,7 +264,7 @@ function showNightWorldMessage(){
     showWorldMessage(
         'world-msg-night-text',
         'world-message-night',
-        'hi kim wara ako didi san ma isipan na masabi sana ma enjoy mo 🌸'
+        'hi kim wara ako didi san ma isipan na masabi sana ma enjoy mo (˶>⩊<˶)🌸 still in progress'
     );
 }
 
@@ -329,7 +329,7 @@ function showSunflowerWorldMessage(){
     showWorldMessage(
         'world-msg-sunflower-text',
         'world-message-sunflower',
-        "remember when you told me na don't let anyone dim my light? napa isip ako mag simo san \"sanflower\" sorry sa corny joke 🌻"
+        "remember when you told me na don't let anyone dim my light? napa isip ako mag simo san \"sanflower\" sorry sa corny joke (ᵕ—ᴗ—)🌻"
     );
 }
 
