@@ -618,39 +618,41 @@ function initPondSplash() {
 }
 
 function createSplash(container, x, y) {
-    // Ripple rings
+    // 3 staggered ripple rings — each slightly delayed
     for (let r = 0; r < 3; r++) {
         const ring = document.createElement('div');
         ring.className = 'splash-ring';
-        const size = 20 + r * 8;
-        ring.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;margin-left:${-size/2}px;margin-top:${-size/2}px;animation-delay:${r*0.12}s;`;
+        ring.style.cssText = `left:${x}px;top:${y}px;animation-delay:${r * 0.18}s;`;
         container.appendChild(ring);
-        setTimeout(() => ring.remove(), 900 + r * 120);
+        setTimeout(() => ring.remove(), 1200 + r * 180);
     }
-    // Water droplets
-    for (let d = 0; d < 6; d++) {
+    // 8 droplets in a full circle
+    for (let d = 0; d < 8; d++) {
         const drop = document.createElement('div');
         drop.className = 'splash-drop';
-        const angle = (d / 6) * Math.PI * 2;
-        const dist  = 20 + Math.random() * 25;
+        const angle = (d / 8) * Math.PI * 2;
+        const dist  = 22 + Math.random() * 28;
         const dx    = Math.cos(angle) * dist;
-        const dy    = Math.sin(angle) * dist - 30;
-        const dur   = (0.4 + Math.random() * 0.3).toFixed(2);
-        drop.style.cssText = `left:${x}px;top:${y}px;--sdx:${dx}px;--sdy:${dy}px;--sd-dur:${dur}s;`;
+        const dy    = Math.sin(angle) * dist - 35;
+        const dur   = (0.45 + Math.random() * 0.35).toFixed(2);
+        drop.style.cssText = `left:${x}px;top:${y}px;--sdx:${dx}px;--sdy:${dy}px;--sd-dur:${dur}s;animation-delay:${(Math.random()*0.08).toFixed(2)}s;`;
         container.appendChild(drop);
-        setTimeout(() => drop.remove(), parseFloat(dur) * 1000 + 50);
+        setTimeout(() => drop.remove(), parseFloat(dur) * 1000 + 200);
     }
-    // Water sound
+    // Layered water plop sound
     if (audioContext) {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, audioContext.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.15, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.35);
-        osc.connect(gain); gain.connect(audioContext.destination);
-        osc.start(); osc.stop(audioContext.currentTime + 0.35);
+        [800, 500, 300].forEach((freq, i) => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'sine';
+            const t = audioContext.currentTime + i * 0.05;
+            osc.frequency.setValueAtTime(freq, t);
+            osc.frequency.exponentialRampToValueAtTime(freq * 0.25, t + 0.28);
+            gain.gain.setValueAtTime(0.12 - i * 0.03, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+            osc.connect(gain); gain.connect(audioContext.destination);
+            osc.start(t); osc.stop(t + 0.33);
+        });
     }
 }
 
