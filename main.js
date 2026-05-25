@@ -135,9 +135,10 @@ function showMountainMessage(){
 function showMountainScene(){
     const scene=document.getElementById('scene');
     scene.classList.add('visible');
-    generateStars('stars');
+    generateStarsCached('stars');
     generateParticles();
     setTimeout(showMountainMessage, 800);
+    startShootingStars();
 }
 
 // =============================================
@@ -146,6 +147,7 @@ function showMountainScene(){
 let activeWorld=null;
 
 function travelToWorld(worldId, setupFn, messageFn){
+    stopShootingStars();
     const scene=document.getElementById('scene');
     const world=document.getElementById(worldId);
 
@@ -172,22 +174,12 @@ function travelToWorld(worldId, setupFn, messageFn){
 
 function exitWorld(){
     if(!activeWorld) return;
-    const world=document.getElementById(activeWorld);
-    const scene=document.getElementById('scene');
-
-    // Reset world
-    world.classList.remove('entering');
-
-    // Clean up active world content
-    setTimeout(()=>{
-        resetWorld(activeWorld);
-        activeWorld=null;
-
-        // Bring scene back
-        scene.style.display='';
-        scene.style.opacity='0';
-        setTimeout(()=>{ scene.style.transition='opacity 0.8s ease'; scene.style.opacity='1'; }, 50);
-    }, 500);
+    const worldToExit = activeWorld;
+    exitWorldAnimated(worldToExit, () => {
+        resetWorld(worldToExit);
+        activeWorld = null;
+        startShootingStars();
+    });
 }
 
 function resetWorld(worldId){
@@ -246,6 +238,8 @@ function showWorldMessage(textElId, containerElId, message){
 // WORLD 1: NIGHT FLOWERS
 // =============================================
 function setupNightWorld(){
+    stopAmbient();
+    setTimeout(()=>playAmbientCrickets(), 1000);
     // Restart night flower animations
     ['flower--1','flower--2','flower--3'].forEach(cls=>{
         const el=document.querySelector('#night-flower-scene .'+cls);
@@ -264,7 +258,7 @@ function showNightWorldMessage(){
     showWorldMessage(
         'world-msg-night-text',
         'world-message-night',
-        'hi kim wara ako didi san ma isipan na masabi sana ma enjoy mo (˶>⩊<˶)🌸 still in progress'
+        'hi kim wara ako didi san ma isipan na masabi sana ma enjoy mo 🌸'
     );
 }
 
@@ -311,6 +305,8 @@ function buildSunflowers(){
 }
 
 function setupSunflowerWorld(){
+    stopAmbient();
+    setTimeout(()=>playAmbientWind(), 500);
     buildSunflowers();
     const flowers=Array.from(document.querySelectorAll('#world-sunflower .flower-container'));
     flowers[0].classList.add('animate');
@@ -329,7 +325,7 @@ function showSunflowerWorldMessage(){
     showWorldMessage(
         'world-msg-sunflower-text',
         'world-message-sunflower',
-        "remember when you told me na don't let anyone dim my light? napa isip ako mag simo san \"sanflower\" sorry sa corny joke (ᵕ—ᴗ—)🌻"
+        "remember when you told me na don't let anyone dim my light? napa isip ako mag simo san \"sanflower\" sorry sa corny joke 🌻"
     );
 }
 
@@ -362,6 +358,7 @@ function startExperience(){
 // INIT
 // =============================================
 window.addEventListener('DOMContentLoaded',()=>{
+    initLoadingScreen();
     animateMessage();
 
     // First message → tap to begin
@@ -387,10 +384,12 @@ window.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('cat-caption').classList.remove('visible');
         exitWorld();
     });
+    document.getElementById('back-night').addEventListener('click', exitWorld);
     document.getElementById('back-sunflower').addEventListener('click',exitWorld);
 
     // Moon photo
     initMoonPhoto();
+    initPondSplash();
 });
 
 // =============================================
@@ -414,10 +413,10 @@ function generateFireflies() {
 }
 
 function setupCatWorld() {
+    stopAmbient();
+    setTimeout(()=>playAmbientNight(), 800);
     generateFireflies();
-    if (document.getElementById('stars-cat').children.length === 0) {
-        generateStars('stars-cat');
-    }
+    generateStarsCached('stars-cat');
     // Scale cat container to fit screen width
     const container = document.querySelector('#world-cat .container');
     if (container) {
@@ -435,6 +434,229 @@ function showCatWorldMessage() {
     showWorldMessage(
         'world-msg-cat-text',
         'world-message-cat',
-        'hi kim adi an miya, wara lng na isipan ko lng mag butang san nakitaan ko kanina an profile pic mo 🐱 sa ML'
+        'hi kim adi an miya, wara lng na isipan ko lng mag butang san nakitaan ko kanina an profile pic mo 🐱'
     );
+}
+
+// =============================================
+// LOADING SCREEN
+// =============================================
+function initLoadingScreen() {
+    const screen = document.getElementById('loading-screen');
+    // Hide after fonts/assets settle
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            screen.classList.add('done');
+            setTimeout(() => screen.remove(), 900);
+        }, 1200);
+    });
+    // Fallback — remove after 4s regardless
+    setTimeout(() => {
+        screen.classList.add('done');
+        setTimeout(() => { if (screen.parentNode) screen.remove(); }, 900);
+    }, 4000);
+}
+
+// =============================================
+// SHOOTING STARS
+// =============================================
+let shootingStarInterval = null;
+
+function launchShootingStar() {
+    const container = document.getElementById('shooting-stars');
+    if (!container) return;
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+    const startX = 10 + Math.random() * 70;
+    const startY = 5  + Math.random() * 40;
+    const angle  = 15 + Math.random() * 25;
+    const dist   = 150 + Math.random() * 200;
+    const rad    = angle * Math.PI / 180;
+    const tx     = dist * Math.cos(rad);
+    const ty     = dist * Math.sin(rad);
+    const dur    = (0.6 + Math.random() * 0.5).toFixed(2);
+    star.style.cssText = `left:${startX}%;top:${startY}%;--ss-angle:${angle}deg;--ss-tx:${tx}px;--ss-ty:${ty}px;--ss-dur:${dur}s;`;
+    container.appendChild(star);
+    void star.offsetWidth;
+    star.classList.add('shoot');
+    setTimeout(() => star.remove(), parseFloat(dur) * 1000 + 100);
+}
+
+function startShootingStars() {
+    // Random interval 4-12 seconds between shooting stars
+    function scheduleNext() {
+        const delay = 4000 + Math.random() * 8000;
+        shootingStarInterval = setTimeout(() => {
+            launchShootingStar();
+            scheduleNext();
+        }, delay);
+    }
+    scheduleNext();
+}
+
+function stopShootingStars() {
+    clearTimeout(shootingStarInterval);
+    shootingStarInterval = null;
+}
+
+// =============================================
+// AMBIENT SOUND PER WORLD
+// =============================================
+let ambientNodes = [];
+
+function stopAmbient() {
+    ambientNodes.forEach(n => {
+        try { n.stop(); n.disconnect(); } catch(e) {}
+    });
+    ambientNodes = [];
+}
+
+function playAmbientCrickets() {
+    if (!audioContext) return;
+    // Simulate crickets with filtered noise bursts
+    function chirp() {
+        if (ambientNodes.length === 0) return; // stopped
+        const buf = audioContext.createBuffer(1, audioContext.sampleRate * 0.04, audioContext.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < data.length; i++) data[i] = (Math.random()*2-1)*0.3;
+        const src = audioContext.createBufferSource();
+        src.buffer = buf;
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'bandpass'; filter.frequency.value = 4200; filter.Q.value = 8;
+        const gain = audioContext.createGain();
+        gain.gain.value = 0.18;
+        src.connect(filter); filter.connect(gain); gain.connect(audioContext.destination);
+        src.start();
+        ambientNodes.push(src);
+        // Schedule next chirp
+        setTimeout(chirp, 180 + Math.random() * 120);
+    }
+    // Kick off multiple cricket voices
+    ambientNodes.push({ stop: ()=>{}, disconnect: ()=>{} }); // sentinel
+    for (let v = 0; v < 3; v++) {
+        setTimeout(chirp, v * 60);
+    }
+}
+
+function playAmbientWind() {
+    if (!audioContext) return;
+    const bufLen = audioContext.sampleRate * 4;
+    const buf = audioContext.createBuffer(1, bufLen, audioContext.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+    const src = audioContext.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const filter = audioContext.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 320;
+    const gain = audioContext.createGain();
+    gain.gain.value = 0;
+    gain.gain.linearRampToValueAtTime(0.12, audioContext.currentTime + 2);
+    src.connect(filter); filter.connect(gain); gain.connect(audioContext.destination);
+    src.start();
+    ambientNodes.push(src);
+}
+
+function playAmbientNight() {
+    // Soft low hum + distant crickets for cat world
+    playAmbientCrickets();
+    if (!audioContext) return;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.type = 'sine'; osc.frequency.value = 55;
+    gain.gain.value = 0;
+    gain.gain.linearRampToValueAtTime(0.04, audioContext.currentTime + 3);
+    osc.connect(gain); gain.connect(audioContext.destination);
+    osc.start();
+    ambientNodes.push(osc);
+}
+
+// =============================================
+// REVERSE ZOOM BACK TRANSITION
+// =============================================
+function exitWorldAnimated(worldId, onDone) {
+    const world = document.getElementById(worldId);
+    const scene = document.getElementById('scene');
+
+    // Zoom world back out (reverse of travel-in)
+    world.style.transition = 'transform 0.9s cubic-bezier(0.4,0,1,1), opacity 0.6s ease';
+    world.style.transform = 'scale(0.15)';
+    world.style.opacity = '0';
+
+    stopAmbient();
+
+    setTimeout(() => {
+        world.classList.remove('entering');
+        world.style.transition = '';
+        world.style.transform = '';
+        world.style.opacity = '';
+        if (onDone) onDone();
+
+        // Fade scene back in
+        scene.style.display = '';
+        scene.style.opacity = '0';
+        scene.style.transition = 'opacity 0.7s ease';
+        setTimeout(() => { scene.style.opacity = '1'; }, 30);
+    }, 900);
+}
+
+// =============================================
+// POND SPLASH EASTER EGG
+// =============================================
+function initPondSplash() {
+    const container = document.getElementById('pond-splash-container');
+    if (!container) return;
+    container.addEventListener('click', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        createSplash(container, x, y);
+    });
+}
+
+function createSplash(container, x, y) {
+    // Ripple rings
+    for (let r = 0; r < 3; r++) {
+        const ring = document.createElement('div');
+        ring.className = 'splash-ring';
+        const size = 20 + r * 8;
+        ring.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;margin-left:${-size/2}px;margin-top:${-size/2}px;animation-delay:${r*0.12}s;`;
+        container.appendChild(ring);
+        setTimeout(() => ring.remove(), 900 + r * 120);
+    }
+    // Water droplets
+    for (let d = 0; d < 6; d++) {
+        const drop = document.createElement('div');
+        drop.className = 'splash-drop';
+        const angle = (d / 6) * Math.PI * 2;
+        const dist  = 20 + Math.random() * 25;
+        const dx    = Math.cos(angle) * dist;
+        const dy    = Math.sin(angle) * dist - 30;
+        const dur   = (0.4 + Math.random() * 0.3).toFixed(2);
+        drop.style.cssText = `left:${x}px;top:${y}px;--sdx:${dx}px;--sdy:${dy}px;--sd-dur:${dur}s;`;
+        container.appendChild(drop);
+        setTimeout(() => drop.remove(), parseFloat(dur) * 1000 + 50);
+    }
+    // Water sound
+    if (audioContext) {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioContext.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.35);
+        osc.connect(gain); gain.connect(audioContext.destination);
+        osc.start(); osc.stop(audioContext.currentTime + 0.35);
+    }
+}
+
+// =============================================
+// STAR CACHING
+// =============================================
+const starsGenerated = new Set();
+
+function generateStarsCached(containerId) {
+    if (starsGenerated.has(containerId)) return;
+    generateStars(containerId);
+    starsGenerated.add(containerId);
 }
