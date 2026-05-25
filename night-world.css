@@ -13,8 +13,8 @@
 
 /* Anchor flowers to bottom, leave space for pond */
 #flower-scene-inner {
-    min-height: 100vh !important;
-    padding: 0 0 20% !important;
+    min-height: 100dvh !important;
+    padding: 0 0 clamp(15%, 22%, 25%) !important;
     background-color: transparent !important;
     display: flex !important;
     align-items: flex-end !important;
