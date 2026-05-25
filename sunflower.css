@@ -4,7 +4,7 @@
 #world-sunflower::after {
     content:'';
     position:absolute;
-    bottom:0; left:0; width:100%; height:30%;
+    bottom:0; left:0; width:100%; height:28%;
     background:linear-gradient(to bottom,
         #2d5a1b 0%,
         #1e3d10 40%,
@@ -25,7 +25,8 @@
 }
 
 .ground {
-    width:100vmin;
+    width:min(100vw, 100vh * 1.5);
+    width:min(100vw, 100svh);
     aspect-ratio:1.5;
     overflow:visible;
     position:relative;
