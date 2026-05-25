@@ -417,13 +417,17 @@ function setupCatWorld() {
     setTimeout(()=>playAmbientNight(), 800);
     generateFireflies();
     generateStarsCached('stars-cat');
-    // Scale cat container to fit screen width
+    // Scale cat container — portrait-first, use vw not vmin
     const container = document.querySelector('#world-cat .container');
     if (container) {
-        const scale = Math.min(1, (window.innerWidth * 0.88) / 350);
+        const availW = Math.min(window.innerWidth * 0.88, window.innerHeight * 0.55);
+        const scale = Math.min(1, availW / 350);
         container.style.transform = `scale(${scale})`;
         const wrap = document.querySelector('#world-cat .cat-wrap');
-        if (wrap) wrap.style.height = (200 * scale) + 'px';
+        if (wrap) {
+            wrap.style.height = (200 * scale) + 'px';
+            wrap.style.width = (350 * scale) + 'px';
+        }
     }
     setTimeout(() => {
         document.getElementById('cat-caption').classList.add('visible');
