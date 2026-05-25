@@ -833,3 +833,89 @@ html, body {
 }
 #video-close:hover,
 #video-close:active { background: rgba(255,255,255,0.28); }
+
+/* Photo tap hint */
+#photo-tap-hint {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    animation: pulse 2s ease-in-out infinite;
+    margin-top: -0.3rem;
+}
+
+/* =============================================
+   INLINE MESSAGE INBOX — dark textarea + gradient send btn
+============================================= */
+#inbox-wrap {
+    width: 100%;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+}
+#inbox-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+#inbox-text {
+    width: 100%;
+    background: #0d1220;
+    border: 1.5px solid rgba(140,120,255,0.35);
+    border-radius: 12px;
+    padding: 0.65rem 0.8rem;
+    color: #fff;
+    font-size: clamp(0.78rem, 3vw, 0.88rem);
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.55;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+#inbox-text:focus {
+    border-color: rgba(140,120,255,0.75);
+}
+#inbox-text::placeholder { color: rgba(255,255,255,0.28); }
+#inbox-send {
+    width: 100%;
+    background: linear-gradient(90deg, #a78bfa 0%, #38bdf8 100%);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1rem;
+    font-size: clamp(0.78rem, 3vw, 0.88rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+#inbox-send:active  { transform: scale(0.97); opacity: 0.88; }
+#inbox-send:disabled{ opacity: 0.45; cursor: default; }
+#inbox-status {
+    font-size: 0.72rem;
+    text-align: center;
+    min-height: 1rem;
+    color: rgba(150,220,255,0.85);
+}
+#inbox-char {
+    color: rgba(255,255,255,0.22);
+    font-size: 0.66rem;
+    text-align: right;
+    width: 100%;
+}
+#inbox-or {
+    color: rgba(255,255,255,0.22);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
