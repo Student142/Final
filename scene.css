@@ -651,7 +651,7 @@ html, body {
 ============================================= */
 .polaroid-frame {
     background: #fff;
-    padding: 10px 10px 36px;
+    padding: 10px;
     border-radius: 3px;
     box-shadow:
         0 4px 20px rgba(0,0,0,0.5),
