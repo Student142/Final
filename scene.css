@@ -383,7 +383,7 @@ html, body {
     height:auto; max-height:40%;
     display:flex; justify-content:center; align-items:flex-start;
     z-index:500; pointer-events:none;
-    padding:max(env(safe-area-inset-top, 0.8rem), 0.8rem) 1.5rem 1rem;
+    padding:0.8rem 1.5rem 1rem;
     background:linear-gradient(to bottom,rgba(5,5,20,0.85) 0%,rgba(5,5,20,0.6) 70%,transparent 100%);
     opacity:0; transition:opacity 1s ease;
 }
@@ -413,7 +413,6 @@ html, body {
     padding:0.65rem 2rem;
     border-radius:999px; cursor:pointer;
     backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
     transition:background 0.2s ease, transform 0.2s ease;
     letter-spacing:0.05em;
     min-width:120px; text-align:center;
@@ -441,14 +440,14 @@ html, body {
     display:flex; justify-content:center; align-items:center;
     opacity:0; pointer-events:none;
     transition:opacity 0.5s ease;
-    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
 }
 #photo-overlay.visible { opacity:1; pointer-events:auto; }
 #photo-frame {
     display:flex; flex-direction:column; align-items:center;
     gap:0.8rem;
     max-height:95vh; overflow-y:auto;
-    padding:max(env(safe-area-inset-top,0.8rem),0.8rem) 0.5rem max(env(safe-area-inset-bottom,1.5rem),1.5rem);
+    padding:0.8rem 0.5rem 1.5rem;
     transform:scale(0.9); transition:transform 0.5s ease;
     scrollbar-width:none; -ms-overflow-style:none;
     width:100%;
@@ -490,7 +489,7 @@ html, body {
     border:1.5px solid rgba(255,255,255,0.3);
     border-radius:50%; color:white; font-size:1.1rem;
     cursor:pointer; display:flex; justify-content:center; align-items:center;
-    backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+    backdrop-filter:blur(5px);
     transition:background 0.2s ease; z-index:10000;
 }
 #photo-close:hover { background:rgba(255,255,255,0.25); }
@@ -541,13 +540,9 @@ html, body {
     #photo-img { max-height:65vh; }
 }
 
-/* Safe area for notched iPhones */
-@supports (padding: max(0px)) {
-    .world-message {
-        padding-top: max(env(safe-area-inset-top, 0.8rem), 0.8rem);
-    }
+
     .back-btn {
-        bottom: max(env(safe-area-inset-bottom, 1.2rem), 1.2rem);
+        bottom: 1.2rem;
     }
 }
 
@@ -773,3 +768,68 @@ html, body {
     0%   { transform: translate(0,0) scale(1); opacity: 1; }
     100% { transform: translate(var(--sdx), var(--sdy)) scale(0); opacity: 0; }
 }
+
+/* =============================================
+   VIDEO OVERLAY
+============================================= */
+#video-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92);
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(8px);
+}
+#video-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+#video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    width: 92vw;
+    max-width: 480px;
+}
+#kim-video {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow:
+        0 0 40px rgba(100,180,255,0.3),
+        0 0 80px rgba(100,180,255,0.15);
+    display: block;
+    background: #000;
+}
+#video-caption {
+    color: rgba(255,255,255,0.75);
+    font-size: clamp(0.85rem,3vw,1rem);
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 16px rgba(100,180,255,0.6);
+}
+#video-close {
+    position: fixed;
+    top: 20px; right: 20px;
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    transition: background 0.2s ease;
+    z-index: 10000;
+    touch-action: manipulation;
+}
+#video-close:hover,
+#video-close:active { background: rgba(255,255,255,0.28); }
