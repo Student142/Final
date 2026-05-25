@@ -333,16 +333,42 @@ function showSunflowerWorldMessage(){
 // MOON PHOTO LIGHTBOX
 // =============================================
 function initMoonPhoto(){
-    const overlay=document.getElementById('photo-overlay');
-    const closeBtn=document.getElementById('photo-close');
+    const videoOverlay = document.getElementById('video-overlay');
+    const video        = document.getElementById('kim-video');
+    const videoClose   = document.getElementById('video-close');
+    const photoOverlay = document.getElementById('photo-overlay');
+    const photoClose   = document.getElementById('photo-close');
 
-    // Attach to all moon-containers
+    // Moon tap → play video first
     document.querySelectorAll('.moon-container, .moon-container--world').forEach(moon=>{
         moon.style.cursor='pointer';
-        moon.addEventListener('click',()=>overlay.classList.add('visible'));
+        moon.addEventListener('click', ()=>{
+            videoOverlay.classList.add('visible');
+            video.currentTime = 0;
+            video.play().catch(()=>{});
+        });
     });
-    closeBtn.addEventListener('click',e=>{ e.stopPropagation(); overlay.classList.remove('visible'); });
-    overlay.addEventListener('click',()=>overlay.classList.remove('visible'));
+
+    // Video close → stop video, show photo
+    function closeVideo() {
+        video.pause();
+        video.currentTime = 0;
+        videoOverlay.classList.remove('visible');
+        // Show photo overlay after a short beat
+        setTimeout(()=> photoOverlay.classList.add('visible'), 300);
+    }
+
+    videoClose.addEventListener('click', e=>{ e.stopPropagation(); closeVideo(); });
+
+    // Also close + show photo when video ends naturally
+    video.addEventListener('ended', ()=>{
+        videoOverlay.classList.remove('visible');
+        setTimeout(()=> photoOverlay.classList.add('visible'), 400);
+    });
+
+    // Photo overlay close
+    photoClose.addEventListener('click', e=>{ e.stopPropagation(); photoOverlay.classList.remove('visible'); });
+    photoOverlay.addEventListener('click', ()=> photoOverlay.classList.remove('visible'));
 }
 
 // =============================================
