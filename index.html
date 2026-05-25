@@ -12,7 +12,13 @@
 </head>
 <body>
 
-    <!-- ① FIRST MESSAGE SCREEN -->
+    <!-- ⓪ LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loading-moon"></div>
+        <div class="loading-text">loading<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></div>
+    </div>
+
+        <!-- ① FIRST MESSAGE SCREEN -->
     <div id="message-screen">
         <div class="message-container" id="message-container"></div>
         <div id="tap-hint">tap anywhere to begin ✨</div>
@@ -71,6 +77,10 @@
         </div>
 
         <div class="particles-container" id="particles"></div>
+        <div id="shooting-stars"></div>
+        <div class="fog-layer fog-layer--1"></div>
+        <div class="fog-layer fog-layer--2"></div>
+        <div id="made-with">made with 💙 for kim</div>
     </div>
 
     <!-- ③ WORLD: NIGHT FLOWERS -->
@@ -85,6 +95,8 @@
             </div>
         </div>
 
+        <div class="fog-layer fog-layer--1"></div>
+        <div class="fog-layer fog-layer--2"></div>
         <!-- World message -->
         <div class="world-message" id="world-message-night">
             <p class="world-message-text" id="world-msg-night-text"></p>
@@ -321,6 +333,7 @@
             </div>
         </div>
 
+        <div id="pond-splash-container"></div>
         <!-- Back button -->
         <button class="back-btn" id="back-night">← Back</button>
     </div>
@@ -345,7 +358,7 @@
         </div>
 
         <!-- Cat caption -->
-        <div id="cat-caption">Sana magustohan mo ina na miya<br>magsabi ka na lng name nya 🐱</div>
+        <div id="cat-caption">inspired by your new profile picture in ML<br>hope you like it 🐱</div>
 
         <!-- Fireflies injected by JS -->
         <div id="cat-fireflies"></div>
@@ -407,7 +420,10 @@
     <!-- PHOTO OVERLAY (moon tap) -->
     <div id="photo-overlay">
         <div id="photo-frame">
-            <img id="photo-img" src="photo.jpg" alt="us" />
+            <div class="polaroid-frame">
+                <img id="photo-img" src="photo.jpg" alt="us" />
+                <div class="polaroid-label">📸 us</div>
+            </div>
             <p id="photo-caption">
                 You found me yey (˶ᵔ ᵕ ᵔ˶)<br><br>
                 I'll leave this as a reminder to always remember<br>
