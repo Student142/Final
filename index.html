@@ -305,38 +305,73 @@
         </div>
 
         <!-- SVG filter for water turbulence -->
-        <svg id="pond-svg-filter" xmlns="http://www.w3.org/2000/svg">
+        <svg id="pond-svg-filter" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;">
             <defs>
-                <filter id="pond-turbulence" x="0" y="0" width="100%" height="100%">
-                    <feTurbulence id="pond-filter-anim" type="turbulence"
-                        numOctaves="2" seed="5"
-                        baseFrequency="0.015 0.12">
+                <filter id="pond-turbulence" x="0%" y="0%" width="100%" height="100%">
+                    <feTurbulence id="pond-filter-anim" type="fractalNoise"
+                        numOctaves="3" seed="8"
+                        baseFrequency="0.018 0.09">
                         <animate attributeName="baseFrequency"
-                            dur="8s"
+                            dur="10s"
                             keyTimes="0;0.5;1"
-                            values="0.015 0.10;0.025 0.15;0.015 0.10"
+                            values="0.018 0.08;0.028 0.13;0.018 0.08"
                             repeatCount="indefinite"/>
                     </feTurbulence>
-                    <feDisplacementMap scale="8" in="SourceGraphic"/>
+                    <feDisplacementMap scale="6" in="SourceGraphic" xChannelSelector="R" yChannelSelector="G"/>
+                </filter>
+                <!-- Fish shape filter for wobble -->
+                <filter id="fish-wobble">
+                    <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="1" seed="3">
+                        <animate attributeName="baseFrequency" dur="2s" values="0.04;0.07;0.04" repeatCount="indefinite"/>
+                    </feTurbulence>
+                    <feDisplacementMap scale="3" in="SourceGraphic"/>
                 </filter>
             </defs>
         </svg>
 
         <!-- Pond -->
         <div id="pond">
-            <div id="pond-edge"></div>
-            <div id="pond-water"></div>
-            <div id="pond-reflection"></div>
-            <div id="pond-ripples">
-                <span style="top:15%;--rp-dur:3.5s;--rp-delay:0s;"></span>
-                <span style="top:32%;--rp-dur:4.2s;--rp-delay:-1.5s;"></span>
-                <span style="top:50%;--rp-dur:3.8s;--rp-delay:-0.8s;"></span>
-                <span style="top:68%;--rp-dur:4.5s;--rp-delay:-2.2s;"></span>
-                <span style="top:82%;--rp-dur:3.2s;--rp-delay:-1.1s;"></span>
+            <!-- Curved bank top edge -->
+            <div id="pond-bank"></div>
+            <!-- Water body with perspective -->
+            <div id="pond-water">
+                <!-- Depth layers -->
+                <div class="pond-depth pond-depth--far"></div>
+                <div class="pond-depth pond-depth--mid"></div>
+                <div class="pond-depth pond-depth--near"></div>
+                <!-- Teal flower reflection -->
+                <div id="pond-reflection"></div>
+                <!-- Moon shimmer streak -->
+                <div id="pond-moon-streak"></div>
+                <!-- Animated ripple lines with turbulence -->
+                <div id="pond-surface">
+                    <span class="pond-wave" style="--pw-y:18%;--pw-w:70%;--pw-dur:4s;--pw-delay:-0.5s;"></span>
+                    <span class="pond-wave" style="--pw-y:36%;--pw-w:85%;--pw-dur:5.5s;--pw-delay:-2s;"></span>
+                    <span class="pond-wave" style="--pw-y:54%;--pw-w:75%;--pw-dur:4.8s;--pw-delay:-1s;"></span>
+                    <span class="pond-wave" style="--pw-y:70%;--pw-w:90%;--pw-dur:6s;--pw-delay:-3s;"></span>
+                    <span class="pond-wave" style="--pw-y:84%;--pw-w:65%;--pw-dur:3.8s;--pw-delay:-1.5s;"></span>
+                </div>
+                <!-- Fish SVG -->
+                <svg id="pond-fish-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 30" preserveAspectRatio="xMidYMid meet">
+                    <!-- Fish 1 -->
+                    <g class="fish fish--1">
+                        <ellipse cx="30" cy="15" rx="18" ry="7" fill="rgba(57,198,214,0.55)"/>
+                        <polygon points="48,15 56,8 56,22" fill="rgba(57,198,214,0.4)"/>
+                        <ellipse cx="24" cy="15" rx="4" ry="4" fill="rgba(100,230,240,0.3)"/>
+                        <circle cx="15" cy="13" r="1.5" fill="rgba(255,255,255,0.7)"/>
+                    </g>
+                    <!-- Fish 2 (smaller, opposite direction) -->
+                    <g class="fish fish--2" transform="scale(-1,1) translate(-80,0)">
+                        <ellipse cx="50" cy="22" rx="11" ry="4.5" fill="rgba(100,200,220,0.4)"/>
+                        <polygon points="61,22 67,17 67,27" fill="rgba(80,180,210,0.35)"/>
+                        <circle cx="42" cy="21" r="1" fill="rgba(255,255,255,0.6)"/>
+                    </g>
+                </svg>
             </div>
         </div>
 
         <div id="pond-splash-container"></div>
+
         <!-- Back button -->
         <button class="back-btn" id="back-night">← Back</button>
     </div>
