@@ -338,35 +338,48 @@ function initMoonPhoto(){
     const videoClose   = document.getElementById('video-close');
     const photoOverlay = document.getElementById('photo-overlay');
     const photoClose   = document.getElementById('photo-close');
+    const photoImg     = document.getElementById('photo-img');
 
-    // Moon tap → play video first
+    // Moon tap → show PHOTO first
     document.querySelectorAll('.moon-container, .moon-container--world').forEach(moon=>{
         moon.style.cursor='pointer';
         moon.addEventListener('click', ()=>{
-            videoOverlay.classList.add('visible');
-            video.currentTime = 0;
-            video.play().catch(()=>{});
+            photoOverlay.classList.add('visible');
         });
     });
 
-    // Video close → stop video, show photo
-    function closeVideo() {
+    // Tapping the PHOTO itself → close photo, play video
+    photoImg.style.cursor = 'pointer';
+    photoImg.addEventListener('click', e => {
+        e.stopPropagation();
+        photoOverlay.classList.remove('visible');
+        setTimeout(() => {
+            videoOverlay.classList.add('visible');
+            video.currentTime = 0;
+            video.play().catch(()=>{});
+        }, 300);
+    });
+
+    // Also add a small hint label on the photo
+    const hint = document.createElement('p');
+    hint.id = 'photo-tap-hint';
+    hint.textContent = 'tap the photo ▶';
+    photoImg.parentNode.insertBefore(hint, photoImg.nextSibling);
+
+    // Video close button
+    videoClose.addEventListener('click', e=>{
+        e.stopPropagation();
         video.pause();
         video.currentTime = 0;
         videoOverlay.classList.remove('visible');
-        // Show photo overlay after a short beat
-        setTimeout(()=> photoOverlay.classList.add('visible'), 300);
-    }
-
-    videoClose.addEventListener('click', e=>{ e.stopPropagation(); closeVideo(); });
-
-    // Also close + show photo when video ends naturally
-    video.addEventListener('ended', ()=>{
-        videoOverlay.classList.remove('visible');
-        setTimeout(()=> photoOverlay.classList.add('visible'), 400);
     });
 
-    // Photo overlay close
+    // Video ends naturally → just close it
+    video.addEventListener('ended', ()=>{
+        videoOverlay.classList.remove('visible');
+    });
+
+    // Photo overlay close (tapping outside photo)
     photoClose.addEventListener('click', e=>{ e.stopPropagation(); photoOverlay.classList.remove('visible'); });
     photoOverlay.addEventListener('click', ()=> photoOverlay.classList.remove('visible'));
 }
@@ -692,3 +705,42 @@ function generateStarsCached(containerId) {
     generateStars(containerId);
     starsGenerated.add(containerId);
 }
+
+// =============================================
+// INLINE MESSAGE INBOX
+// Uses Formspree — sign up free at formspree.io
+// Replace YOUR_FORM_ID below with your actual form ID
+// =============================================
+function initInbox() {
+    const textarea  = document.getElementById('inbox-text');
+    const sendBtn   = document.getElementById('inbox-send');
+    const status    = document.getElementById('inbox-status');
+    const charCount = document.getElementById('inbox-char');
+    if (!textarea) return;
+
+    // Character counter
+    textarea.addEventListener('input', () => {
+        charCount.textContent = `${textarea.value.length}/500`;
+    });
+
+    sendBtn.addEventListener('click', () => {
+        const msg = textarea.value.trim();
+        if (!msg) {
+            status.textContent = 'write something first 🌸';
+            setTimeout(() => { status.textContent = ''; }, 2500);
+            return;
+        }
+        // Open Messenger with message pre-filled
+        const encoded = encodeURIComponent(msg);
+        window.open(`https://m.me/william.you.888332?text=${encoded}`, '_blank');
+        status.textContent = 'opening Messenger... 💙';
+        textarea.value = '';
+        charCount.textContent = '0/500';
+        setTimeout(() => { status.textContent = ''; }, 3000);
+    });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Append initInbox call (won't duplicate since DOMContentLoaded fires once)
+    initInbox();
+});
