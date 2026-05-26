@@ -1,69 +1,26 @@
 // main.js — mountain selection, world travel, flower scenes, music
 
 // =============================================
-// AUDIO
+// BACKGROUND MUSIC — HTML5 Audio
 // =============================================
-let audioContext=null, isPlaying=false;
-let oscillators=[], gainNodes=[], musicLoopId=null, chordIndex=0;
-const notes={C3:130.81,D3:146.83,E3:164.81,F3:174.61,G3:196,A3:220,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,E5:659.25,G5:783.99};
-const chords=[[notes.C4,notes.E4,notes.G4],[notes.A3,notes.C4,notes.E4],[notes.F3,notes.A3,notes.C4],[notes.G3,notes.D4,notes.G4],[notes.E3,notes.G3,notes.C4],[notes.D3,notes.F3,notes.A3]];
+let bgMusic = null;
+// audioContext kept for ambient sounds
+let audioContext = null;
 
-function initAudio(){ if(!audioContext) audioContext=new(window.AudioContext||window.webkitAudioContext)(); }
-function createOsc(frequency,type='sine'){
-    const osc=audioContext.createOscillator(), gain=audioContext.createGain();
-    osc.type=type; osc.frequency.value=frequency;
-    osc.detune.value=(Math.random()-0.5)*8; gain.gain.value=0;
-    osc.connect(gain); gain.connect(audioContext.destination); osc.start();
-    return{osc,gain};
+function initAudio(){
+    if(!audioContext) audioContext = new(window.AudioContext||window.webkitAudioContext)();
 }
-function playChord(chord,duration,startTime){
-    chord.forEach((freq,i)=>{
-        const{osc,gain}=createOsc(freq,'triangle'); const nd=i*0.1;
-        gain.gain.setValueAtTime(0,startTime+nd);
-        gain.gain.linearRampToValueAtTime(0.07,startTime+nd+0.5);
-        gain.gain.exponentialRampToValueAtTime(0.02,startTime+duration-0.5);
-        gain.gain.linearRampToValueAtTime(0,startTime+duration);
-        oscillators.push(osc); gainNodes.push(gain);
-        setTimeout(()=>{try{osc.stop();osc.disconnect();gain.disconnect();}catch(e){}},
-            (duration+startTime-audioContext.currentTime)*1000+500);
-    });
-}
-function playArpeggio(startTime){
-    [notes.C5,notes.E5,notes.G5,notes.C5,notes.G4,notes.E4].forEach((freq,i)=>{
-        const{osc,gain}=createOsc(freq,'sine'); const t=startTime+i*0.28;
-        gain.gain.setValueAtTime(0,t);
-        gain.gain.linearRampToValueAtTime(0.04,t+0.05);
-        gain.gain.exponentialRampToValueAtTime(0.01,t+0.4);
-        gain.gain.linearRampToValueAtTime(0,t+0.5);
-        oscillators.push(osc); gainNodes.push(gain);
-        setTimeout(()=>{try{osc.stop();osc.disconnect();gain.disconnect();}catch(e){}},
-            (t-audioContext.currentTime+0.6)*1000);
-    });
-}
-function playBass(freq,duration,startTime){
-    const{osc,gain}=createOsc(freq,'sine');
-    gain.gain.setValueAtTime(0,startTime);
-    gain.gain.linearRampToValueAtTime(0.09,startTime+0.3);
-    gain.gain.exponentialRampToValueAtTime(0.04,startTime+duration-0.5);
-    gain.gain.linearRampToValueAtTime(0,startTime+duration);
-    oscillators.push(osc); gainNodes.push(gain);
-    setTimeout(()=>{try{osc.stop();osc.disconnect();gain.disconnect();}catch(e){}},
-        (duration+startTime-audioContext.currentTime)*1000+500);
-}
+
 function startMusic(){
-    if(isPlaying) return;
-    initAudio(); isPlaying=true;
-    const bass=[notes.C3,notes.A3,notes.F3,notes.G3,notes.E3,notes.D3];
-    function loop(){
-        if(!isPlaying) return;
-        const now=audioContext.currentTime;
-        playBass(bass[chordIndex],3,now);
-        playChord(chords[chordIndex],3.5,now+0.2);
-        if(chordIndex%2===0) playArpeggio(now+2);
-        chordIndex=(chordIndex+1)%chords.length;
-        musicLoopId=setTimeout(loop,4000);
-    }
-    loop();
+    if(bgMusic) return;
+    bgMusic = new Audio('background_music.mp3');
+    bgMusic.loop = true;
+    bgMusic.volume = 0.3;
+    bgMusic.play().catch(()=>{
+        // Autoplay blocked — will play on next user interaction
+        const resume = () => { bgMusic.play(); document.removeEventListener('touchstart', resume); };
+        document.addEventListener('touchstart', resume, { once: true });
+    });
 }
 
 // =============================================
@@ -429,6 +386,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     // Moon photo
     initMoonPhoto();
     initPondSplash();
+
 });
 
 // =============================================
